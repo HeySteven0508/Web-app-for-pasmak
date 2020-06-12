@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title> TESDA PASMAK : Scholarship Billing Checking System </title>
+
+    <!-- Bootstrap CSS -->
+    <link th:rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+    <!-- bootstrap theme -->
+    <link th:rel="stylesheet" th:href="@{css/bootstrap-theme.css}" >
+    <!--external css-->
+    <!-- font icon -->
+    <link th:rel="stylesheet" th:href="@{css/elegant-icons-style.css}"  />
+    <link th:rel="stylesheet"  th:href="@{css/font-awesome.css}"/>
+    <!-- Custom styles -->
+    <link th:rel="stylesheet" th:href="@{css/style.css}" >
+    <link th:rel="stylesheet" th:href="@{css/style-responsive.css}"  />
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/js/html5shiv.js}"></script>
+    <script th:src="@{/js/respond.min.js}"></script>
+    <![endif]-->
+
+    <style>
+        body{
+            background: -webkit-linear-gradient(right, #bdc3c7, #e7e1e1);
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container" align="center">
+    <form class="login-form" action="#" th:action="@{/dashboard}">
+        <div class="login-wrap">
+            <h3> PASMAK</h3>
+           <h4> Scholarship Billing Checking System </h4><br/>
+            <h4> Account Login </h4> <br/>
+
+            <div class="input-group">
+                <span class="input-group-addon"><i class="icon_profile"></i></span>
+                <input type="text" class="form-control" placeholder="Username" autofocus>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                <input type="password" class="form-control" placeholder="Password">
+            </div>
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+
+
+        </div>
+    </form>
+</div>
+
+
+</body>
+
+</html>

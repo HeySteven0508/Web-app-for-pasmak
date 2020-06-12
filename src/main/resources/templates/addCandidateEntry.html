@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" th:href="@{img/favicon.png}">
+
+    <title>Main Dashboard </title>
+
+    <!-- Bootstrap CSS -->
+    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link th:href="@{css/bootstrap-theme.css}" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link th:href="@{css/elegant-icons-style.css}" rel="stylesheet" />
+    <link th:href="@{css/font-awesome.min.css}" rel="stylesheet" />
+    <!-- Custom styles -->
+    <link th:href="@{css/style.css}" rel="stylesheet">
+    <link th:href="@{css/style-responsive.css}" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
+    <!--[if lt IE 9]>
+    <script src="@{js/html5shiv.js}"></script>
+    <script src="@{js/respond.min.js}"></script>
+    <script src="@{js/lte-ie7.js}"></script>
+    <![endif]-->
+</head>
+
+<body>
+<!-- container section start -->
+<section id="container" class="">
+    <!--header start-->
+
+    <header class="header dark-bg">
+        <div class="toggle-nav">
+            <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
+        </div>
+
+        <!--logo start-->
+        <a href="index.html" class="logo">Scholarship <span class="lite">Billing Checking</span></a>
+        <!--logo end-->
+
+        <div class="top-nav notification-row">
+                <!-- user login dropdown start-->
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="profile-ava">
+                                <img alt="" src="img/avatar1_small.jpg">
+                            </span>
+                        <span class="username">#USERNAME</span>
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu extended logout">
+                        <div class="log-arrow-up"></div>
+                        <li>
+                            <a href="#"><i class="icon_key_alt"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- user login dropdown end -->
+            </ul>
+            <!-- notificatoin dropdown end-->
+        </div>
+    </header>
+    <!--header end-->
+
+    <!--sidebar start-->
+    <aside>
+        <div id="sidebar" class="nav-collapse ">
+            <!-- sidebar menu start-->
+            <ul class="sidebar-menu">
+                <li class="">
+                    <a class="" href="#">
+                        <i class="icon_house_alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="sub-menu">
+                    <a th:href="@{javascript:;}" class="">
+                        <i class="icon_document_alt"></i>
+                        <span>Bill Entry</span>
+                        <span class="menu-arrow arrow_carrot-right"></span>
+                    </a>
+                    <ul class="sub">
+                        <li> <a class="" href="#"> View Billing Entry </a> </li>
+                        <li> <a class="" href="#"> Create Billing Entry </a> </li>
+                        <li> <a class="" href="#">Add Candidates</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="" href="#">
+                        <i class="icon_search-2"></i>
+                        <span>Review Billing Entry</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="" href="#">
+                        <i class="icon_phone"></i>
+                        <span>Verify Billing Entry</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="" href="#">
+                        <i class="icon_document_alt"></i>
+                        <span>Audit Billing Entry</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="" href="#">
+                        <i class="icon_folder"></i>
+                        <span>Documents Control</span>
+                    </a>
+                </li>
+                <li class="sub-menu">
+                    <a th:href="@{javascript:;}" class="">
+                        <i class="icon_creditcard"></i>
+                        <span>Checks</span>
+                        <span class="menu-arrow arrow_carrot-right"></span>
+                    </a>
+                    <ul class="sub">
+                        <li> <a class="" href="#"> Prepare Checks </a> </li>
+                        <li> <a class="" href="#"> Release Checks </a> </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- sidebar menu end-->
+        </div>
+    </aside>
+    <!--sidebar end-->
+
+    <!--main content start-->
+    <section id="main-content">
+        <section class="wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa fa-bars"></i> Dashboard</h3>
+                    <ol class="breadcrumb">
+                        <li><i class="fa fa-home"></i><a th:href="@{/dashboard}">Home</a></li>
+                        <!--<li><i class="fa fa-bars"></i>Pages</li>
+                        <li><i class="fa fa-square-o"></i>Pages</li>-->
+                    </ol>
+                </div>
+            </div>
+            <!-- Start of your page content -->
+            <div class="row">
+                <div class="col-lg-12">
+
+                <!-- page start-->
+                <h1 th:text="${billingEntry.centerName}">center name</h1>
+                <!-- page end-->
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            List of Candidates:
+                        </header>
+                        <div class="panel-body">
+                            <div class="col-lg-12">
+                                <form class="form-horizontal" th:action="@{/addCandidateEntrySuccessful(id=${billId})}" th:object="${candidateEntry}" method="post">
+                                    <div class="form-group">
+                                        <label class="control-label col-lg-2" for="txtFullName">Full Name</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control input-lg m-bot15" type="text" id="txtFullName" th:field="*{candidateName}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-lg-2" for="txtPhone">Phone Number</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control input-lg m-bot15" type="text" id="txtPhone" th:field="*{candidatePhone}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-lg-2" for="txtSGno">SG No.</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control input-lg m-bot15" type="text" id="txtSGno" th:field="*{candidateSgno}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6" align="right">
+                                        <div class="btn-group">
+                                            <button class="btn btn-success btn-lg"><i class="icon_plus"></i> Add Candidate</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6" align="right">
+                                        <div class="btn-group">
+                                            <input type="hidden" class="form-control" id="candidateEnroll"  th:field="*{candidateEnroll}">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
+            </div>
+
+        </section>
+    </section>
+    <!--main content end-->
+</section>
+<!-- container section end -->
+<!-- javascripts -->
+<script th:src="@{js/jquery.js}"></script>
+<script th:src="@{js/bootstrap.min.js}"></script>
+<!-- nice scroll -->
+<script th:src="@{js/jquery.scrollTo.min.js}"></script>
+<script th:src="@{js/jquery.nicescroll.js}" type="text/javascript"></script>
+<!--custome script for all page-->
+<script th:src="@{js/scripts.js}"></script>
+
+<script th:inline="javascript">
+    document.getElementById('candidateEnroll').value = [[${billId}]]
+</script>
+
+
+</body>
+
+</html>
