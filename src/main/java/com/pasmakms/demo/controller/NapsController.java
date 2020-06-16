@@ -2,13 +2,13 @@ package com.pasmakms.demo.controller;
 
 import com.pasmakms.demo.domain.*;
 import com.pasmakms.demo.services.*;
+import com.pasmakms.demo.otherData.ListItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.persistence.PreUpdate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,20 +19,18 @@ public class NapsController {
     private BillingEntryService BillingEntryService;
     private CandidateEntryService candidateEntryService;
     private BillingEntryNotesService billingEntryNotesService;
-    private BillingEntryTaggingService billingEntryTaggingService;
     private BillingFeedbackService billingFeedbackService;
     private CandidateCheckDetailsService candidateCheckDetailsService;
     private ListItem listItem;
 
     public NapsController(com.pasmakms.demo.services.BillingEntryService billingEntryService,
                           CandidateEntryService candidateEntryService, BillingEntryNotesService billingEntryNotesService,
-                          BillingEntryTaggingService billingEntryTaggingService, BillingFeedbackService billingFeedbackService,
+                          BillingFeedbackService billingFeedbackService,
                           CandidateCheckDetailsService candidateCheckDetailsService) {
 
         BillingEntryService = billingEntryService;
         this.candidateEntryService = candidateEntryService;
         this.billingEntryNotesService = billingEntryNotesService;
-        this.billingEntryTaggingService = billingEntryTaggingService;
         this.billingFeedbackService = billingFeedbackService;
         this.candidateCheckDetailsService = candidateCheckDetailsService;
     }
@@ -94,7 +92,9 @@ public class NapsController {
         List<String> categoryList = listItem.getCategoryList();
         List<String> typeOfScholarshipList = listItem.getTypeOfScholarList();
         List<String> sourceOfFundsList = listItem.getSouceOfFundsList();
+        List<String> documentTypeList = listItem.getDocumentTypeList();
 
+        model.addAttribute("documentList", documentTypeList);
         model.addAttribute("centerList",centerList);
         model.addAttribute("qualificationList",qualificationList);
         model.addAttribute("categoryList",categoryList);
@@ -111,9 +111,6 @@ public class NapsController {
         BillingEntryService.save(billingEntry);
         BillingEntryNotes billingEntryNotes = new BillingEntryNotes("New",billingEntry.getBillId());
         billingEntryNotesService.save(billingEntryNotes);
-        BillingEntryTagging billingEntryTagging = new BillingEntryTagging(billingEntry.getBillId());
-        billingEntryTaggingService.save(billingEntryTagging);
-
 
         return "redirect:/viewBillingEntry";
     }
@@ -163,15 +160,13 @@ public class NapsController {
 
 
     // update the Bill Status from New to For Review
-    @RequestMapping(path = "/forReview",method = RequestMethod.POST)
-    public String updateBillStatus(@RequestParam(value = "id") int id,@ModelAttribute("billingFeedback") BillingFeedback billingFeedback){
+    @RequestMapping(path = "/forReview")
+    public String updateBillStatus(@RequestParam(value = "id") int id){
         BillingEntry billingEntry = BillingEntryService.get(id);
         BillingEntryNotes billingEntryNotes = billingEntryNotesService.get(id);
         billingEntryNotes.addBillingNotes("for Review");
         billingEntry.setBillStatus("For Review");
         BillingEntryService.save(billingEntry);
-        billingFeedback.setBillingId(id);
-        billingFeedbackService.save(billingFeedback);
 
         return "redirect:/viewBillingEntry";
     }
@@ -182,7 +177,6 @@ public class NapsController {
         BillingEntryService.delete(id);
         billingEntryNotesService.delete(id);
         Long candidateEntries = candidateEntryService.deleteByCandidateEnroll(id);
-        billingEntryTaggingService.delete(id);
 
         return "redirect:/viewBillingEntry";
     }
@@ -238,11 +232,9 @@ public class NapsController {
 
         List<BillingEntry> billingEntryList = BillingEntryService.listAll();
         List<BillingEntry> returnedBillingEntryList = BillingEntryService.listAllReturn();
-        List<BillingEntryTagging> billingEntryTaggings = billingEntryTaggingService.listAll();
 
         model.addAttribute("returnBillings",returnedBillingEntryList);
         model.addAttribute("allBillings",billingEntryList);
-        model.addAttribute("findByTag",billingEntryTaggings);
         return "viewAllBillingEntry";
     }
 

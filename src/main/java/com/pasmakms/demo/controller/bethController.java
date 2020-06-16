@@ -22,14 +22,12 @@ public class bethController {
     private BillingEntryService BillingEntryService;
     private CandidateEntryService candidateEntryService;
     private BillingEntryNotesService billingEntryNotesService;
-    private BillingEntryTaggingService billingEntryTaggingService;
     private CandidateCheckDetailsService candidateCheckDetailsService;
 
-    public bethController(com.pasmakms.demo.services.BillingEntryService billingEntryService, CandidateEntryService candidateEntryService, BillingEntryNotesService billingEntryNotesService, BillingEntryTaggingService billingEntryTaggingService, CandidateCheckDetailsService candidateCheckDetailsService) {
+    public bethController(com.pasmakms.demo.services.BillingEntryService billingEntryService, CandidateEntryService candidateEntryService, BillingEntryNotesService billingEntryNotesService, CandidateCheckDetailsService candidateCheckDetailsService) {
         BillingEntryService = billingEntryService;
         this.candidateEntryService = candidateEntryService;
         this.billingEntryNotesService = billingEntryNotesService;
-        this.billingEntryTaggingService = billingEntryTaggingService;
         this.candidateCheckDetailsService = candidateCheckDetailsService;
     }
 

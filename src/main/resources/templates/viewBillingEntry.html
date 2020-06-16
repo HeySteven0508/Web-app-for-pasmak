@@ -165,7 +165,6 @@
                                     <tr>
                                         <th> No. </th>
                                         <th><i class="icon_building"></i> Center Name</th>
-                                        <th><i class="icon_group"></i> Category</th>
                                         <th><i class="icon_calendar"></i> End Of Training</th>
                                         <th><i class="icon_book"></i> Type Of Scholarship</th>
                                         <th><i class="icon_error-triangle"></i> Bill Status</th>
@@ -174,7 +173,6 @@
                                     <tr th:each="billingEntries, bill : ${billingEntries}">
                                         <td th:text="${bill.index + 1}">1</td>
                                         <td th:text="${billingEntries.centerName}">CACW</td>
-                                        <td th:text="${billingEntries.category}">CACW</td>
                                         <td th:text="${billingEntries.endOfTraining}">05-20-2020</td>
                                         <td th:text="${billingEntries.typeOfScholar}">STEP</td>
                                         <td th:text="${billingEntries.billStatus}">New</td>

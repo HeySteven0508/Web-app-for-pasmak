@@ -3,8 +3,9 @@ package com.pasmakms.demo.controller;
 import com.pasmakms.demo.domain.*;
 import com.pasmakms.demo.services.BillingEntryNotesService;
 import com.pasmakms.demo.services.BillingEntryService;
-import com.pasmakms.demo.services.BillingEntryTaggingService;
 import com.pasmakms.demo.services.CandidateEntryService;
+import com.pasmakms.demo.otherData.ListItem;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,21 +17,20 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Controller
 public class aljonController {
 
     private BillingEntryService BillingEntryService;
     private CandidateEntryService candidateEntryService;
     private BillingEntryNotesService billingEntryNotesService;
-    private BillingEntryTaggingService billingEntryTaggingService;
     private ListItem listItem;
 
 
-    public aljonController(com.pasmakms.demo.services.BillingEntryService billingEntryService, CandidateEntryService candidateEntryService, BillingEntryNotesService billingEntryNotesService, BillingEntryTaggingService billingEntryTaggingService) {
+    public aljonController(com.pasmakms.demo.services.BillingEntryService billingEntryService, CandidateEntryService candidateEntryService, BillingEntryNotesService billingEntryNotesService) {
         BillingEntryService = billingEntryService;
         this.candidateEntryService = candidateEntryService;
         this.billingEntryNotesService = billingEntryNotesService;
-        this.billingEntryTaggingService = billingEntryTaggingService;
     }
 
     @RequestMapping("/reviewBillingEntry")
@@ -44,54 +44,56 @@ public class aljonController {
     public ModelAndView viewBillingDetailPage(@RequestParam(value = "id") int id) {
         BillingEntry billingEntry = BillingEntryService.get(id);
         BillingEntryNotes billingEntryNotes = billingEntryNotesService.get(id);
-        BillingEntryTagging billingEntryTagging = billingEntryTaggingService.get(id);
-
-
-        String type = billingEntry.getCategory();
-        String Category = billingEntry.getTypeOfScholar();
-
         listItem = new ListItem();
 
-        List<String> myChecklist = listItem.getChecklist(type, Category);
+        List<String> myChecklist = null;
+        String categoryBill;
+        String typeOfScholar;
 
+        if(billingEntry.getCategory() != null){
+            categoryBill = billingEntry.getCategory();
+            typeOfScholar=billingEntry.getTypeOfScholar();
+            myChecklist = listItem.getChecklist(categoryBill,typeOfScholar);
+        }
+
+        List<String> category = listItem.getCategoryList();
+        List<String> documentType = listItem.getDocumentTypeList();
 
         List<CandidateEntry> candidateEntries = candidateEntryService.findAllByCandidateEnrolled(id);
-
 
         ModelAndView mav = new ModelAndView("viewReviewBillingEntryDetail");
         mav.addObject("billEntry", billingEntry);
         mav.addObject("candidateLists", candidateEntries);
         mav.addObject("billNotes", billingEntryNotes);
-        mav.addObject("billEntryTag", billingEntryTagging);
+        mav.addObject("category",category);
+        mav.addObject("documentType",documentType);
         mav.addObject("myChecklist", myChecklist);
         return mav;
     }
 
-    @RequestMapping("/addTaggingInfo")
-    public String viewAddTaggingPage(Model model, @RequestParam(value = "id") int id) {
+    @RequestMapping("updateBillingDocuments")
+    public String updateBillingDocuments(@RequestParam(name = "id")int id, @ModelAttribute("billEntry")BillingEntry billingEntry){
 
-        BillingEntry billingEntry = BillingEntryService.get(id);
-        BillingEntryTagging billingEntryTagging = billingEntryTaggingService.get(id);
-        listItem = new ListItem();
-        List<String> documentTypeList = listItem.getDocumentTypeList();
-        model.addAttribute("billingEntryTag", billingEntryTagging);
-        model.addAttribute("billingEntry", billingEntry);
-        model.addAttribute("documentList", documentTypeList);
-        model.addAttribute("billId", id);
+        BillingEntry getMyBillingEntry = BillingEntryService.get(id);
+        getMyBillingEntry.setDocumentType(billingEntry.getDocumentType());
+        getMyBillingEntry.setCategory(billingEntry.getCategory());
+        BillingEntryService.save(getMyBillingEntry);
 
-        return "addTaggingInfo";
+        
+        return "redirect:/viewReviewBillEntryDetail?id=" + id;
     }
 
 
     @RequestMapping("addBillingTagSuccessful")
-    public String saveBillTagging(@RequestParam(name = "id") int id, @ModelAttribute("BillingEntryTagging") BillingEntryTagging billingEntryTagging) {
+    public String saveBillTagging(@RequestParam(name = "id") int id, Model model) {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
         String date = simpleDateFormat.format(new Date());
         String ID = date + "-" + id;
-        billingEntryTagging.setBillingIdNo(ID);
-        billingEntryTaggingService.save(billingEntryTagging);
+
         DateToday dateToday = new DateToday();
+        BillingEntry billingEntry = BillingEntryService.get(id);
+        billingEntry.setBillingIdNo(ID);
         BillingEntryNotes billingEntryNotes = billingEntryNotesService.get(id);
         billingEntryNotes.setBillChecked(dateToday.getDateToday());
         billingEntryNotesService.save(billingEntryNotes);
@@ -113,4 +115,17 @@ public class aljonController {
 
 
     }
+
+    @RequestMapping("resetcategory")
+    public String resetCategory(@RequestParam(name = "id") int id ){
+        BillingEntry billingEntry = BillingEntryService.get(id);
+        billingEntry.setCategory(null);
+        billingEntry.setDocumentType(null);
+        BillingEntryService.save(billingEntry);
+
+        return "redirect:/viewReviewBillEntryDetail?id=" + id;
+    }
+
+
+    
 }

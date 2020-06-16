@@ -165,14 +165,14 @@
 
                                     <div class="form-group ">
                                         <div class="row">
-                                            <label class="control-label col-lg-6">Why this document needs to be returned to the TVI/AC? (State some findings you found)</label>
+                                            <label class="control-label col-lg-6">Identify what are the Findings you found. (Be specific on the details)</label>
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-10">
                                                 <textarea class="form-control"  name="comment" required th:field="*{billFeedback}"></textarea>
                                             </div>
                                             <div class="col-lg-2">
-                                                <input type="text" class="form-control"  name="txtID"  id ="txtID" th:field="*{billingId}"   required >
+                                                <input type="hidden" class="form-control"  name="txtID"  id ="txtID" th:field="*{billingId}"   required >
                                             </div>
                                         </div>
 
@@ -180,7 +180,7 @@
 
                                     <div class="col-lg-6" align="right">
                                         <div class="btn-group">
-                                            <button class="btn btn-danger"  ><span class="icon_target"></span> Return Billing Documents </button>
+                                            <button class="btn btn-danger"  ><span class="icon_target"></span> Add Findings </button>
                                         </div>
                                     </div>
                                 </form>

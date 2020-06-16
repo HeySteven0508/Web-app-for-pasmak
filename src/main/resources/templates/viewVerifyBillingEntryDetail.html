@@ -157,150 +157,77 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <section class="panel">
-                        <header class="panel-heading">
-                            <div class="col-lg-6">
-                                Billing Information<br/>
-                            </div>
-                        </header>
-                        <div class="panel-body">
-                            <table class="table">
-                                <tbody>
-                                <tr>
-                                    <td>Name of TVI/AC</td>
-                                    <td th:text="${billingEntry.centerName}"> #Category</td>
-                                </tr>
-                                <tr>
-                                    <td>Billing ID No.</td>
-                                    <td th:text="${billEntryTag.billingIdNo}"> #Category</td>
-                                </tr>
-                                <tr>
-                                    <td>Document Type</td>
-                                    <td th:text="${billEntryTag.documentType}"> #Category</td>
-                                </tr>
-                                <tr>
-                                    <td>Category</td>
-                                    <td th:text="${billingEntry.category}"> #Category</td>
-                                </tr>
-                                <tr>
-                                    <td>Qualification</td>
-                                    <td th:text="${billingEntry.qualification}"> #Category</td>
-                                </tr>
-                                <tr>
-                                    <td>Scholarship Type</td>
-                                    <td th:text="${billingEntry.typeOfScholar}"> #Category</td>
-                                </tr>
-                                <tr>
-                                    <td>SG No.</td>
-                                    <td th:text="${billingEntry.sgNo}"> #Category</td>
-                                </tr>
+                        <section class="panel">
+                            <header class="panel-heading">
+                                List of Candidates:
+                            </header>
+                            <div class="panel-body">
 
-                                <tr>
-                                    <td>Start of Training</td>
-                                    <td th:text="${billingEntry.startOfTraining}"> #Category</td>
-                                </tr>
-                                <tr>
-                                    <td>End of Training</td>
-                                    <td th:text="${billingEntry.endOfTraining}"> #Category</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </section>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <section class="panel">
+                                            <header class="panel-heading">
+                                                Candidates Enrolled:
+                                            </header>
 
-                </div>
+                                            <table class="table table-striped table-advance table-hover">
+                                                <tbody>
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th><i class="icon_profile"></i> Full Name</th>
+                                                    <th><i class="icon_mobile"></i> Mobile</th>
+                                                    <th> Contacted By: </th>
+                                                    <th> Remarks: </th>
+                                                </tr>
+                                                        <form th:action="@{/forAudit(id=${billingEntry.billId})}" th:object="${candidateEntries}" method="post">
+                                                            <tr th:each="candidatelist, candid : ${candidateEntries}">
+                                                                <td th:text="${candid.index + 1}">1</td>
+                                                                <td th:text="${candidatelist.candidateName}">Angeline Mcclain</td>
+                                                                <td th:text="${candidatelist.candidatePhone}">176-026-5992</td>
+                                                                <!--<td>
+                                                                    <ul>
+                                                                        <li th:each="contact : ${ContactedBy}" class="radio-inline">
+                                                                            <input class="form-check-input" type="radio" th:name="radioChoice" th:field="*{candidateEntries[__${itemStat.index}__]}" >
+                                                                            <label th:for="${#ids.next('ContactedBy')}" th:text="${contact}"></label>
+                                                                        </li>
+                                                                    </ul>
+                                                                </td>
+                                                                <td>-->
+                                                                    <textarea rows="2" cols="50" th:field="*{get(0)}"> </textarea>
+                                                                </td>
+                                                             </tr>
+                                                        </form>
 
-            </div>
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <section class="panel">
-                        <header class="panel-heading">
-                            List of Candidates:
-                        </header>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <section class="panel">
-                                        <header class="panel-heading">
-                                            Candidates Enrolled:
-                                        </header>
+                                                </tbody>
+                                            </table>
+                                        </section>
+                                    </div>
 
-                                        <table class="table table-striped table-advance table-hover">
-                                            <tbody>
-                                            <tr>
-                                                <th>No.</th>
-                                                <th><i class="icon_profile"></i> Full Name</th>
-                                                <th><i class="icon_mobile"></i> Mobile</th>
-                                                <th> Contacted By: </th>
-                                            </tr>
-                                            <tr th:each="candidatelist, candid : ${candidateEntries}">
-                                                <td th:text="${candid.index + 1}">1</td>
-                                                <td th:text="${candidatelist.candidateName}">Angeline Mcclain</td>
-                                                <td th:text="${candidatelist.candidatePhone}">176-026-5992</td>
-                                                <td>
-                                                    <form>
-                                                        <label class="radio-inline">
-                                                            <input class="form-check-input" type="radio" name="radioChoice"> Text
-                                                        </label>
-                                                        <label class="radio-inline">
-                                                            <input class="form-check-input" type="radio" name="radioChoice"> Call
-                                                        </label>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </section>
                                 </div>
 
+
                             </div>
+                        </section>
 
-
-                        </div>
-                    </section>
-
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="col-lg-6">
-                        <div class="form-group ">
-                            <label for="ccomment" class="control-label col-lg-2">Feedback</label>
-                            <div class="col-lg-10">
-                                <textarea class="form-control " id="ccomment" name="comment" required></textarea>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-lg-6">
-                        <div class = "row">
-                        <br/>
+                        <div class="row" align="center">
+                            <button class="btn btn-success btn-lg">Submit Docs for Audit</button>
                         </div>
                         <div class="row">
-                            <a class="btn btn-success btn-lg" th:href="@{/forAudit(id=${billingEntry.billId})}">Submit for Audit</a>
+                            <br/>
                         </div>
-                        <div class = "row">
+                        <div class="row" align="center">
+                            <div class="col-lg-12">
+                                <a class="btn btn-danger" th:href="@{/returnDocuments(id=${billingEntry.billId})}" ><span class="icon_target"></span> Add Findings </a>
+                            </div>
 
                         </div>
-
-                    </div>
                 </div>
             </div>
+
+
+
         </section>
-        <div class="row">
-            <br/>
-        </div>
-
-        <div class="row" align="center">
-            <div class="col-lg-12">
-                <a class="btn btn-danger" th:href="@{/returnDocuments(id=${billingEntry.billId})}" ><span class="icon_target"></span> Return Billing Documents </a>
-            </div>
-
-        </div>
-
-
     </section>
 
 

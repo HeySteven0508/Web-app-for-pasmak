@@ -170,8 +170,8 @@
                             <table class="table">
                                 <tbody>
                                 <tr>
-                                    <td>Category</td>
-                                    <td th:text="${billEntry.category}"> #Category</td>
+                                    <td>Document Type</td>
+                                    <td th:text="${billEntry.documentType}"> #Category</td>
                                 </tr>
                                 <tr>
                                     <td>Qualification</td>
@@ -216,35 +216,37 @@
                     <section class="panel">
                         <header class="panel-heading">
                             <div class="col-lg-6">
-                                Feedback <br/>
+                                Submit <br/>
                             </div>
                         </header>
+
                         <div class="panel-body">
-                            <form th:action="@{/forReview(id=${billEntry.billId})}" th:object="${billingFeedback}" method="post">
-                                <div class="row">
-                                    <div class = "col-lg-12">
-                                        <textarea class="form-control " id="ccomment" name="comment" th:field="*{billFeedback}"></textarea>
-                                        <span class="help-block">*If the source of funds is declared as 'others' kindly specify on text above.</span>
-                                        <span class="help-block">*Leave Blank if there is no feedback</span>
-
-                                    </div>
-                                </div>
-                                <div class="row" align="center">
-                                    <br/>
-                                </div>
-                                <div class="row" align="center">
-                                    <button class="btn btn-success" ><span class="icon_search-2"></span> Submit for Review</button>
+                            <div class="row">
+                                <div class = "col-lg-12">
+                                    <h3>Reminders:</h3>
+                                    <span class="help-block">*Make sure all the details of bill is correct.</span>
+                                    <span class="help-block">*Make sure all candidates are added before you submit for review.</span>
 
                                 </div>
-
-                            </form>
-
+                            </div>
                             <div class="row" align="center">
                                 <br/>
                             </div>
                             <div class="row" align="center">
-                                <a class="btn btn-danger" th:href="@{/returnDocuments(id=${billEntry.billId})}" ><span class="icon_target"></span> Return Billing Documents </a>
+                                <a th:href="@{/forReview(id=${billEntry.billId})}">
+                                    <button class="btn btn-success" ><span class="icon_search-2"></span> Submit for Review</button>
+
+                                </a>
+
                             </div>
+
+
+                            <div class="row" align="center">
+                                <br/>
+                            </div>
+                           <!-- <div class="row" align="center">
+                                <a class="btn btn-danger" th:href="@{/returnDocuments(id=${billEntry.billId})}" ><span class="icon_target"></span> Return Billing Documents </a>
+                            </div>-->
                         </div>
                     </section>
                 </div>
@@ -281,17 +283,20 @@
                                             <tbody>
                                             <tr>
                                                 <th>No.</th>
+                                                <th><i class="icon_id"></i> SG No. </th>
                                                 <th><i class="icon_profile"></i> Full Name</th>
                                                 <th><i class="icon_mobile"></i> Mobile</th>
-                                                <th><i class="icon_pencil-edit"></i> Edit</th>
-                                                <th><i class="icon_error-circle"></i> Delete</th>
+                                                <th><i class="icon_pencil-edit"></i> Actions</th>
                                             </tr>
                                             <tr th:each="candidatelist, candid : ${candidateLists}">
                                                 <td th:text="${candid.index + 1}">1</td>
+                                                <td th:text="${candidatelist.candidateSgno}"></td>
                                                 <td th:text="${candidatelist.candidateName}">Angeline Mcclain</td>
                                                 <td th:text="${candidatelist.candidatePhone}">176-026-5992</td>
-                                                <td><a class="btn btn-success" th:href="@{/editCandidate(id=${candidatelist.id},billId=${candidatelist.candidateEnroll})}"><i class="icon_pencil"></i></a> </td>
-                                                <td><a class="btn btn-danger" th:href="@{/deleteCandidate(canId=${candidatelist.id},billId = ${billEntry.billId})}"><i class="icon_error-circle_alt"></i> </a></td>
+                                                <td>
+                                                    <a class="btn btn-success" th:href="@{/editCandidate(id=${candidatelist.id},billId=${candidatelist.candidateEnroll})}"><i class="icon_pencil"></i></a>
+                                                    <a class="btn btn-danger" th:href="@{/deleteCandidate(canId=${candidatelist.id},billId = ${billEntry.billId})}"><i class="icon_error-circle_alt"></i></a>
+                                                </td>
                                             </tr>
                                             </tbody>
                                         </table>

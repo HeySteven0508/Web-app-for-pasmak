@@ -17,7 +17,6 @@ public class BillingEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long billId;
     private String centerName;
-    private String category;
     private String qualification;
     private String sgNo;
     private String typeOfScholar;
@@ -27,6 +26,7 @@ public class BillingEntry {
     private String sourceOfFunds;
     private String documentType;
     private String billingIdNo;
+    private String category;
 
 
 

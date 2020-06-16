@@ -1,4 +1,4 @@
-package com.pasmakms.demo.domain;
+package com.pasmakms.demo.otherData;
 
 import java.util.Arrays;
 import java.util.List;
@@ -200,23 +200,21 @@ public class ListItem {
             "UNO CAREGIVER and DOMESTIC MNGT TRAINING, INC.",
             "WCU Development and Training Center, Inc.");
 
-    List<String> typeOfScholarList = Arrays.asList("Choose...","STEP","TWSP","CACW");
+    List<String> typeOfScholarList = Arrays.asList("Choose...","STEP","TWSP","CACW","PESFA","ENTREP","Tsuper Iskolar","UAQTEA");
 
-    List<String> categoryList = Arrays.asList("Training", "Assessment");
+    List<String> categoryList = Arrays.asList("Training", "Assessment","Allowance");
 
-    List<String> documentTypeList= Arrays.asList("Training Cost","Assessment Cost",
-                                                "Training Allowance Cost","Book Allowance/Instructional Materials Cost",
-                                                    "Uniform Cost");
 
     List<String> souceOfFundsList = Arrays.asList("Romulo \"Kid\" Peña Jr. (LP) District I", "Luis Jose Angel Campos Jr. (NPC) Distrcit II",
                                             "HON. ANTONINO \"TONY\" G. CALIXTO (Pasay City)", "RO Allocation", "CO Allocation","Others");
 
+    List<String> documentType = Arrays.asList("Training Cost","Assessment Cost","Training Allowance Cost","Book/Instruction Allowance Cost","Uniform Cost","Entrepreneurship Cost","Miscellaneous");
+
+    List<String> ContactedBy = Arrays.asList("Text","Call");
 
 
+    public List<String> getContactedBy(){return  ContactedBy;}
     public List<String> getSouceOfFundsList(){return souceOfFundsList;}
-    public List<String> getDocumentTypeList(){
-        return documentTypeList;
-    }
     public List<String> getTypeOfScholarList() {
         return typeOfScholarList;
     }
@@ -232,6 +230,8 @@ public class ListItem {
     public List<String>getQualificationList(){
         return qualificationList;
     }
+
+    public List<String>getDocumentTypeList(){return  documentType;}
 
     public List<String> getChecklist(String type,String category){
 
@@ -260,6 +260,10 @@ public class ListItem {
                         "Assessment Attendance");
 
             }
+            else
+            {
+                checklist = null;
+            }
 
 
         }
@@ -280,6 +284,23 @@ public class ListItem {
                         "Attendance");
             }
 
+            else if(category.equalsIgnoreCase("ENTREP")){
+                checklist=Arrays.asList("Billing Statement",
+                        "ER/TR and Terminal report upon Entrep",
+                        "Print screen t2mis upon Entrep",
+                        "Scholarship Voucher",
+                        "Attendance");
+            }
+            else{
+                checklist=null;
+            }
+
+        }
+        else if(type.equalsIgnoreCase("Allowance")){
+            checklist = Arrays.asList("Billing Statement",
+                    "Photocopy of I.D",
+                    "Certified True copy of Attendance",
+                    "Certified true copy of Scholarship voucher (Front and Back)");
         }
         return checklist;
     }

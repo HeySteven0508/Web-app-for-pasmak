@@ -19,6 +19,8 @@ public class CandidateEntry {
     private String candidatePhone;
     private String candidateSgno;
     private int candidateEnroll;
+    private String candidateFeedback;
+    private String contactedBy;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "candidate_id")
