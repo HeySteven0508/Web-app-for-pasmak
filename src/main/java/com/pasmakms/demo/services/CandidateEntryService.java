@@ -32,6 +32,9 @@ public class CandidateEntryService {
       return candidateEntryRepository.findByCandidateName(username);
     }
 
+    public void saveAll(List<CandidateEntry> candidateEntries){
+        candidateEntryRepository.saveAll(candidateEntries);
+    }
 
     public void save(CandidateEntry candidateEntry){
         candidateEntryRepository.save(candidateEntry);

@@ -1,6 +1,7 @@
 package com.pasmakms.demo.controller;
 
 import com.pasmakms.demo.domain.*;
+import com.pasmakms.demo.otherData.DateToday;
 import com.pasmakms.demo.services.BillingEntryNotesService;
 import com.pasmakms.demo.services.BillingEntryService;
 import com.pasmakms.demo.services.CandidateEntryService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -46,14 +48,21 @@ public class aljonController {
         BillingEntryNotes billingEntryNotes = billingEntryNotesService.get(id);
         listItem = new ListItem();
 
-        List<String> myChecklist = null;
+        List<String> myChecklist;
         String categoryBill;
         String typeOfScholar;
+
+        ModelAndView mav = new ModelAndView("viewReviewBillingEntryDetail");
 
         if(billingEntry.getCategory() != null){
             categoryBill = billingEntry.getCategory();
             typeOfScholar=billingEntry.getTypeOfScholar();
             myChecklist = listItem.getChecklist(categoryBill,typeOfScholar);
+
+
+        }
+        else{
+            myChecklist = Arrays.asList("Category Not Found");
         }
 
         List<String> category = listItem.getCategoryList();
@@ -61,13 +70,14 @@ public class aljonController {
 
         List<CandidateEntry> candidateEntries = candidateEntryService.findAllByCandidateEnrolled(id);
 
-        ModelAndView mav = new ModelAndView("viewReviewBillingEntryDetail");
+
         mav.addObject("billEntry", billingEntry);
         mav.addObject("candidateLists", candidateEntries);
         mav.addObject("billNotes", billingEntryNotes);
         mav.addObject("category",category);
         mav.addObject("documentType",documentType);
         mav.addObject("myChecklist", myChecklist);
+
         return mav;
     }
 
@@ -124,6 +134,34 @@ public class aljonController {
         BillingEntryService.save(billingEntry);
 
         return "redirect:/viewReviewBillEntryDetail?id=" + id;
+    }
+
+    @RequestMapping("/forSignatureBilling")
+    public String viewForSignatureBilling(Model model){
+        List<BillingEntry> billingEntries = BillingEntryService.listAllForSignature();
+
+        model.addAttribute("billingEntries",billingEntries);
+
+        return "viewForSignature";
+    }
+    @RequestMapping("/viewForSignatureDetail")
+    public String viewForSignatureBillingDetail(Model model, @RequestParam(name = "id") int id){
+        BillingEntry billingEntry = BillingEntryService.get(id);
+
+        model.addAttribute("billEntry",billingEntry);
+
+        return "viewForSignatureDetail";
+    }
+
+    @RequestMapping("/submitToPrepareChecks")
+    public String submitBillToPrepareChecks(Model model, @RequestParam(name = "id") int id){
+        BillingEntry billingEntry = BillingEntryService.get(id);
+        BillingEntryNotes billingEntryNotes = billingEntryNotesService.get(id);
+        billingEntryNotes.addBillingNotes("Prepare Checks");
+        billingEntry.setBillStatus("Prepare Checks");
+        BillingEntryService.save(billingEntry);
+
+        return "redirect:/forSignatureBilling";
     }
 
 

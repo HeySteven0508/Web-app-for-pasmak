@@ -28,10 +28,14 @@ body {
 
 }
 
-h1,h2,h3,h4,h5{
+h1,h2,h3,h5{
 
     font-weight: 300;
     color: #cbcbcb;
+}
+h4 {
+    font-weight: 300;
+    color: #8d8d8d;
 }
 
 label{
@@ -3359,7 +3363,7 @@ div[data-role="editor-toolbar"] {
 
 /*-----	map-----*/
 
-* Google maps */
+/* Google maps*/
 
 
 

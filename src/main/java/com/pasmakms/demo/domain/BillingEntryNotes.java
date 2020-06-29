@@ -1,7 +1,6 @@
 package com.pasmakms.demo.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,8 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
 @Entity
 public class BillingEntryNotes {
 
@@ -69,7 +67,7 @@ public class BillingEntryNotes {
             String dateCreated =  dateTimeFormat.format(localDateTime);
             String timeCreated = timeFormat.format(currentDate);
 
-            this.billNotes = this.billNotes +  dateCreated + " - " + timeCreated + " :" +" The billing entry was finalized and submitted to Aljon for reviwing the document. ||   ";
+            this.billNotes = this.billNotes +  dateCreated + " - " + timeCreated + " :" +" The billing document was finalized and submitted to Leo for reviwing the document. ||   ";
 
         }
         else if(status.equalsIgnoreCase("for Verify")){
@@ -82,7 +80,7 @@ public class BillingEntryNotes {
             String timeCreated = timeFormat.format(currentDate);
 
             this.billChecked = dateCreated;
-            this.billNotes = this.billNotes +  dateCreated + " - " + timeCreated + " :" +" The billing entry was checked and submitted to Josie for verifying the candidates. ||   ";
+            this.billNotes = this.billNotes +  dateCreated + " - " + timeCreated + " :" +" The billing document was checked and submitted to Josie for verifying the candidates. ||   ";
 
         }
 
@@ -96,9 +94,23 @@ public class BillingEntryNotes {
             String timeCreated = timeFormat.format(currentDate);
 
             this.billVerified = dateCreated;
-            this.billNotes = this.billNotes +  dateCreated + " - " + timeCreated + " :" +" The billing entry was verified with a minimum of 5 candidates and submitted to Ms. Kim for Audit. || ";
+            this.billNotes = this.billNotes +  dateCreated + " - " + timeCreated + " :" +" The billing document was verified with a minimum of 5 candidates and submitted to Ms. Kim for Audit. || ";
 
         }
+
+        else if(status.equalsIgnoreCase("For Signature")){
+            localDateTime = LocalDateTime.now();
+            Date currentDate = new Date();
+            DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("MMMM dd, YYYY");
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+            String dateCreated =  dateTimeFormat.format(localDateTime);
+            String timeCreated = timeFormat.format(currentDate);
+
+            this.billAudited = dateCreated;
+            this.billNotes = this.billNotes +  dateCreated + " - " + timeCreated + " :" +" The billing document was audited by Ms. Kim and sent back to leo for signatory. || ";
+
+        }
+
 
         else if(status.equalsIgnoreCase("Prepare Checks")){
             localDateTime = LocalDateTime.now();
@@ -109,8 +121,8 @@ public class BillingEntryNotes {
             String dateCreated =  dateTimeFormat.format(localDateTime);
             String timeCreated = timeFormat.format(currentDate);
 
-            this.billAudited = dateCreated;
-            this.billNotes = this.billNotes +  dateCreated + " - " + timeCreated + " :" +" The billing entry was audited and submitted to Ma'am. Beth for preparation of Checks. || ";
+            this.billDocControl = dateCreated;
+            this.billNotes = this.billNotes +  dateCreated + " - " + timeCreated + " :" +" The billing document was signed by the signatories and submitted to Ma'am. Beth for preparation of Checks. || ";
 
         }
 

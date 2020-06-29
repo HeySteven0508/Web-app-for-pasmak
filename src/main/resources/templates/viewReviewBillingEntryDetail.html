@@ -305,12 +305,12 @@
                                     <div class="col-sm-1">
                                     </div>
 
-                                    <div class="col-sm-11" th:if="${myChecklist} == null">
-                                        <h3> No requirement found. please click the 'back' to choose approriate category for this bill.</h3>
+                                    <div class="col-sm-11" th:if="${myChecklist.size()} == 1" onload="">
+                                        <h3> No requirement found. please click the 'back' to choose appropriate category for this bill.</h3><br/>
 
                                     </div>
 
-                                    <div class="col-sm-11" th:unless="${myChecklist} == null">
+                                    <div class="col-sm-11" th:unless="${myChecklist.size()} == 1">
                                         <ul>
                                             <li th:each="checklist,count : ${myChecklist}">
                                                 <input type="checkbox" th:value="${checklist}" th:id="${count.index}">
@@ -326,7 +326,7 @@
 
                                     </div>
                                     <div>
-                                        <a class="btn btn-primary" onclick="checkCountFunction()" name="btnVerify"> Verify </a>
+                                        <button class="btn btn-primary" onclick="checkCountFunction()" name="btnVerify"> Verify </button>
                                     </div>
                                 </div>
 
@@ -343,7 +343,7 @@
                                         <!--"-->
 
                                         <a th:href="@{/addBillingTagSuccessful(id=${billEntry.billId})}">
-                                            <button class="btn btn-success" id="myBtn" disabled > Add Tagging Information </button><br/>
+                                            <button class="btn btn-success" id="myBtn" disabled > Add Tagging ID </button><br/>
                                         </a>
 
                                     </div>
@@ -439,7 +439,6 @@
 <script th:src="@{js/scripts.js}"></script>
 
 <script th:inline="javascript">
-
 
     function checkCountFunction() {
 

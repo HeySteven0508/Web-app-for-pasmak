@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <link rel="shortcut icon" th:href="@{img/favicon.png}">
 
-    <title>Check Creation </title>
+    <title>Review Billing entry </title>
 
     <!-- Bootstrap CSS -->
     <link th:href="@{css/bootstrap.min.css}" rel="stylesheet">
@@ -18,13 +18,6 @@
     <!-- Custom styles -->
     <link th:href="@{css/style.css}" rel="stylesheet">
     <link th:href="@{css/style-responsive.css}" rel="stylesheet" />
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-    <!--[if lt IE 9]>
-    <script src="@{js/html5shiv.js}"></script>
-    <script src="@{js/respond.min.js}"></script>
-    <script src="@{js/lte-ie7.js}"></script>
-    <![endif]-->
 </head>
 
 <body>
@@ -42,23 +35,23 @@
         <!--logo end-->
 
         <div class="top-nav notification-row">
-                <!-- user login dropdown start-->
-                <li class="dropdown">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+            <!-- user login dropdown start-->
+            <li class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="profile-ava">
                                 <img alt="" src="img/avatar1_small.jpg">
                             </span>
-                        <span class="username">#USERNAME</span>
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu extended logout">
-                        <div class="log-arrow-up"></div>
-                        <li>
-                            <a href="#"><i class="icon_key_alt"></i> Log Out</a>
-                        </li>
-                    </ul>
-                </li>
-                <!-- user login dropdown end -->
+                    <span class="username">#USERNAME</span>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu extended logout">
+                    <div class="log-arrow-up"></div>
+                    <li>
+                        <a href="#"><i class="icon_key_alt"></i> Log Out</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- user login dropdown end -->
             </ul>
             <!-- notificatoin dropdown end-->
         </div>
@@ -134,7 +127,7 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa fa-bars"></i> Dashboard</h3>
+                    <h3 class="page-header"><i class="fa fa fa-bars" ></i> Review Billing Entry</h3>
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a th:href="@{/dashboard}">Home</a></li>
                         <!--<li><i class="fa fa-bars"></i>Pages</li>
@@ -145,62 +138,120 @@
             <!-- Start of your page content -->
             <div class="row">
                 <div class="col-lg-12">
-
-                <!-- page start-->
-                <h1 th:text="${billingEntry.centerName}">center name</h1>
-                <!-- page end-->
-
+                    <h3 th:text="${billEntry.centerName}"> Training Center </h3>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-lg-12">
+                    <br/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
                     <section class="panel">
                         <header class="panel-heading">
-                            <label class="control-label col-lg-2" th:text="${candidateEntry.candidateName}">Full Name</label>
+                            <div class="col-lg-6">
+                                Billing Information<br/>
+                            </div>
                         </header>
                         <div class="panel-body">
-                            <div class="col-lg-12">
-                                <form class="form-horizontal" th:action="@{/addCheckforCandidate(id=${billingEntry.billId}, candId = ${candidateCheckDetails.candidateId})}" th:object="${candidateCheckDetails}" method="post">
-                                    <div class="form-group">
-                                        <div class="col-lg-10">
-                                            <input  type="text" id="txtID"  hidden th:field="*{candidateId}">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-lg-2" for="txtDV">DV No</label>
-                                        <div class="col-lg-10">
-                                            <input class="form-control input-lg m-bot15" type="text" id="txtDV" disabled th:field="*{candidateDvno}">
-                                        </div>
-                                    </div>
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td>Name of TVI/AC</td>
+                                    <td th:text="${billEntry.centerName}"> #Category</td>
+                                </tr>
+                                <tr>
+                                    <td>Billing ID No.</td>
+                                    <td th:text="${billEntry.billingIdNo}"> #Category</td>
+                                </tr>
+                                <tr>
+                                    <td>Document Type</td>
+                                    <td th:text="${billEntry.documentType}"> #Category</td>
+                                </tr>
+                                <tr>
+                                    <td>Qualification</td>
+                                    <td th:text="${billEntry.qualification}"> #Category</td>
+                                </tr>
+                                <tr>
+                                    <td>Scholarship Type</td>
+                                    <td th:text="${billEntry.typeOfScholar}"> #Category</td>
+                                </tr>
+                                <tr>
+                                    <td>SG No.</td>
+                                    <td th:text="${billEntry.sgNo}"> #Category</td>
+                                </tr>
 
-                                    <div class="form-group">
-                                        <label class="control-label col-lg-2" for="txtCheck">Check No</label>
-                                        <div class="col-lg-10">
-                                            <input class="form-control input-lg m-bot15" type="text" id="txtCheck" th:field="*{candidateCheckno}">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label col-lg-2" for="txtAmount">Check Amount</label>
-                                        <div class="col-lg-10">
-                                            <input class="form-control input-lg m-bot15" type="text" id="txtAmount" th:field="*{candidateCheckamount}">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-6" align="right">
-                                        <div class="btn-group">
-                                            <button class="btn btn-success btn-lg"><i class="icon_plus"></i> Add Check</button>
-                                        </div>
-                                    </div>
-
-                                </form>
-                            </div>
+                                <tr>
+                                    <td>Start of Training</td>
+                                    <td th:text="${billEntry.startOfTraining}"> #Category</td>
+                                </tr>
+                                <tr>
+                                    <td>End of Training</td>
+                                    <td th:text="${billEntry.endOfTraining}"> #Category</td>
+                                </tr>
+                                <tr>
+                                    <td> </td>
+                                    <td>
+                                        <a th:href="@{/viewMoreBillInfo(id=${billEntry.billId})}">
+                                            See more info
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </section>
+                </div>
 
+                <div class="col-lg-6">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <div class="col-lg-6">
+                                    For Signature
+                            </div>
+                        </header>
+
+                        <!--   -------  if the document Type is null and the billingId is null too, Submit first together with the category --------- -->
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-1">
+
+                                </div>
+                                <div class="col-lg-11">
+                                    <input type="checkbox" id="checkbox_sign">
+                                    <label for="checkbox_sign"> The billing Document is signed by the Director</label>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-1">
+
+                                </div>
+                                <div class="col-lg-11">
+                                    <br/>
+                                    <label>*Make sure all signatories are signed on the documents</label>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <a class="btn btn-success" th:href="@{/submitToPrepareChecks(id = ${billEntry.billId})}">Submit to Check Preparation</a>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </section>
                 </div>
 
             </div>
+
 
         </section>
     </section>
@@ -215,6 +266,7 @@
 <script th:src="@{js/jquery.nicescroll.js}" type="text/javascript"></script>
 <!--custome script for all page-->
 <script th:src="@{js/scripts.js}"></script>
+
 
 </body>
 

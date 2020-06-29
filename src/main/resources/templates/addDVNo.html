@@ -147,7 +147,7 @@
                 <div class="col-lg-12">
 
                 <!-- page start-->
-                <h1 th:text="${billingEntry.centerName}">center name</h1>
+                <h1 th:text="${billEntry.centerName}">center name</h1>
                 <!-- page end-->
 
                 </div>
@@ -160,36 +160,17 @@
                         </header>
                         <div class="panel-body">
                             <div class="col-lg-12">
-                                <form class="form-horizontal" th:action="@{/addCheckforCandidate(id=${billingEntry.billId}, candId = ${candidateCheckDetails.candidateId})}" th:object="${candidateCheckDetails}" method="post">
+                                <form class="form-horizontal" th:action="@{/saveDVNo(id=${candidateEntry.id}, billId = ${billEntry.billId})}" th:object="${candidateEntry.candidateCheckDetails}" method="post">
                                     <div class="form-group">
+                                        <label class="control-label col-lg-2"> DV No.</label>
                                         <div class="col-lg-10">
-                                            <input  type="text" id="txtID"  hidden th:field="*{candidateId}">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-lg-2" for="txtDV">DV No</label>
-                                        <div class="col-lg-10">
-                                            <input class="form-control input-lg m-bot15" type="text" id="txtDV" disabled th:field="*{candidateDvno}">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label col-lg-2" for="txtCheck">Check No</label>
-                                        <div class="col-lg-10">
-                                            <input class="form-control input-lg m-bot15" type="text" id="txtCheck" th:field="*{candidateCheckno}">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label col-lg-2" for="txtAmount">Check Amount</label>
-                                        <div class="col-lg-10">
-                                            <input class="form-control input-lg m-bot15" type="text" id="txtAmount" th:field="*{candidateCheckamount}">
+                                            <input class="form-control input-lg m-bot15"  type="text" id="txtID" required  th:field="*{candidateDvno}">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-6" align="right">
                                         <div class="btn-group">
-                                            <button class="btn btn-success btn-lg"><i class="icon_plus"></i> Add Check</button>
+                                            <button class="btn btn-success btn-lg"><i class="icon_plus"></i> Add DV No</button>
                                         </div>
                                     </div>
 

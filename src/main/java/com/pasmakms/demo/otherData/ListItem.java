@@ -169,7 +169,7 @@ public class ListItem {
             "PHILIPPINE ASSIST-LIFE LANGUAGE AND DEVELOPMENT CENTER, INC.",
             "Philippine Center for Advanced Maritime Simulation & Training, Inc. ",
             "Philippine Center for Creative Imaging, Inc.",
-            "Philippine Center for Creatuive Imaging, Inc.",
+            "Philippine Academy For Technical And Vocational Skills, Inc",
             "PHILIPPINE-ITALIAN ASSOCIATION, INC.",
             "PHIL-JAPAN GIJUTSU ITEN FOUNDATION, INC.",
             "Philshalom Int'l. Techvoc Center, Inc.",
@@ -262,7 +262,7 @@ public class ListItem {
             }
             else
             {
-                checklist = null;
+                checklist = Arrays.asList("Wrong Category");
             }
 
 
@@ -284,6 +284,29 @@ public class ListItem {
                         "Attendance");
             }
 
+            else if(category.equalsIgnoreCase("PESFA")){
+                checklist = Arrays.asList("Billing Statement",
+                        "ER/TR and Terminal report with assessment result and ER/TR upon Entrep",
+                        "Print screen t2mis upon training  and Entrep",
+                        "Scholarship Voucher",
+                        "Attendance");
+            }
+
+            else if(category.equalsIgnoreCase("UAQTEA")){
+                checklist = Arrays.asList("Billing Statement",
+                        "ER/TR and Terminal report with assessment result and ER/TR upon Entrep",
+                        "Print screen t2mis upon training  and Entrep",
+                        "Scholarship Voucher",
+                        "Attendance");
+            }
+            else if(category.equalsIgnoreCase("Tsuper Iskolar")){
+                checklist = Arrays.asList("Billing Statement",
+                        "ER/TR and Terminal report with assessment result and ER/TR upon Entrep",
+                        "Print screen t2mis upon training  and Entrep",
+                        "Scholarship Voucher",
+                        "Attendance");
+            }
+
             else if(category.equalsIgnoreCase("ENTREP")){
                 checklist=Arrays.asList("Billing Statement",
                         "ER/TR and Terminal report upon Entrep",
@@ -292,7 +315,7 @@ public class ListItem {
                         "Attendance");
             }
             else{
-                checklist=null;
+                checklist=Arrays.asList("Wrong Category");
             }
 
         }
@@ -302,6 +325,7 @@ public class ListItem {
                     "Certified True copy of Attendance",
                     "Certified true copy of Scholarship voucher (Front and Back)");
         }
+
         return checklist;
     }
 }

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Date;
 
 @Entity
 @Data
@@ -16,6 +17,7 @@ public class BillingFeedback {
     private long id;
     private int billingId;
     private String billFeedback;
+    private Date billDate;
 
 
 }

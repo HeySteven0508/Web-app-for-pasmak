@@ -160,9 +160,63 @@
                 <div class="col-lg-12">
                     <section class="panel">
                         <header class="panel-heading">
-                            List of Candidates:
+                            Check's Information
                         </header>
-                        <div class="panel-body">
+
+                        <div class="panel-body" th:if="${billEntry.category != 'Allowance'}">
+                            <form class="form-horizontal">
+
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <h4>Name of Recipient</h4>
+                                    </div>
+                                    <div class="col-sm-10">
+                                       <h4 th:text="${billEntry.centerName}">center Name</h4>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <h4>DV No.</h4>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <h4 th:text="${candidateEntry.candidateCheckDetails.candidateDvno} ?: 'Not Created Yet'">center Name</h4>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <h4>Check No.</h4>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <h4 th:text="${candidateEntry.candidateCheckDetails.candidateCheckno} ?: 'Not Created Yet'">center Name</h4>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <h4>Check Amount</h4>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <h4 th:text="${candidateEntry.candidateCheckDetails.candidateCheckamount} ?: 'Not Created Yet'">center Name</h4>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <h4>Tax Deducted</h4>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <h4 th:text="${candidateEntry.candidateCheckDetails.candidateTaxdeducted} ?: 'Not Created Yet'">center Name</h4>
+                                    </div>
+                                </div>
+
+
+                            </form>
+
+                        </div>
+
+                        <div class="panel-body" th:unless="${billEntry.category != 'Allowance'}">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <section class="panel">
@@ -174,21 +228,21 @@
                                             <tbody>
                                             <tr>
                                                 <th>No.</th>
+                                                <th> SG No. </th>
                                                 <th><i class="icon_profile"></i> Full Name</th>
                                                 <th><i class="icon_mobile"></i> Mobile</th>
                                                 <th><i class="icon_id"></i> DV No. </th>
                                                 <th><i class="icon_id"></i> Check No. </th>
                                                 <th> Check Amount </th>
-                                                <th> Tax Deducted </th>
                                             </tr>
                                             <tr th:each="candidatelist, candid : ${candidateEntries}">
                                                 <td th:text="${candid.index + 1}">1</td>
+                                                <td th:text="${candidatelist.candidateSgno}">123</td>
                                                 <td th:text="${candidatelist.candidateName}">Angeline Mcclain</td>
                                                 <td th:text="${candidatelist.candidatePhone}">176-026-5992</td>
                                                 <td th:text="${candidatelist.candidateCheckDetails.candidateDvno} ?: 'Not Creted Yet'">176-026-5992</td>
-                                                 <td th:text="${candidatelist.candidateCheckDetails.candidateCheckno} ?: 'Not Creted Yet'">176-026-5992</td>
+                                                <td th:text="${candidatelist.candidateCheckDetails.candidateCheckno} ?: 'Not Creted Yet'">176-026-5992</td>
                                                 <td th:text="${candidatelist.candidateCheckDetails.candidateCheckamount} ?: 'Not Creted Yet'">176-026-5992</td>
-                                                <td th:text="${candidatelist.candidateCheckDetails.candidateTaxdeducted} ?: 'Not Creted Yet'">176-026-5992</td>
                                             </tr>
 
 
@@ -199,8 +253,8 @@
 
                             </div>
 
-
                         </div>
+
                     </section>
 
                 </div>
@@ -208,7 +262,7 @@
 
             </div>
 
-            <div class="row" align="center">
+           <div class="row" align="center" th:if="${candidateEntry.candidateCheckDetails.candidateCheckamount != null}">
                 <a class="btn btn-success" th:href="@{/issuanceOfCheck(id=${billEntry.billId})}" ><span class="icon_target"></span> Submit for Issuance of Checks </a>
             </div>
 

@@ -157,6 +157,7 @@
 
             <div class="row">
                 <div class="col-lg-12">
+                    <form th:action="@{/forAudit(id=${billingEntry.billId})}" th:object="${form}" method="post">
                         <section class="panel">
                             <header class="panel-heading">
                                 List of Candidates:
@@ -179,26 +180,22 @@
                                                     <th> Contacted By: </th>
                                                     <th> Remarks: </th>
                                                 </tr>
-                                                        <form th:action="@{/forAudit(id=${billingEntry.billId})}" th:object="${candidateEntries}" method="post">
-                                                            <tr th:each="candidatelist, candid : ${candidateEntries}">
-                                                                <td th:text="${candid.index + 1}">1</td>
-                                                                <td th:text="${candidatelist.candidateName}">Angeline Mcclain</td>
-                                                                <td th:text="${candidatelist.candidatePhone}">176-026-5992</td>
-                                                                <!--<td>
-                                                                    <ul>
-                                                                        <li th:each="contact : ${ContactedBy}" class="radio-inline">
-                                                                            <input class="form-check-input" type="radio" th:name="radioChoice" th:field="*{candidateEntries[__${itemStat.index}__]}" >
-                                                                            <label th:for="${#ids.next('ContactedBy')}" th:text="${contact}"></label>
-                                                                        </li>
-                                                                    </ul>
-                                                                </td>
-                                                                <td>-->
-                                                                    <textarea rows="2" cols="50" th:field="*{get(0)}"> </textarea>
-                                                                </td>
-                                                             </tr>
-                                                        </form>
-
-
+                                                <tr th:each="candidatelist, candid : *{candidateList}">
+                                                    <td th:text="${candid.index + 1}">1</td>
+                                                    <td th:text="${candidatelist.candidateName}">Angeline Mcclain</td>
+                                                    <td th:text="${candidatelist.candidatePhone}">176-026-5992</td>
+                                                    <td>
+                                                        <ul>
+                                                            <li th:each="contact : ${ContactedBy}" class="radio-inline">
+                                                                <input class="form-check-input" type="radio" th:name="radioChoice" th:value="${contact}" th:field="*{candidateList[__${candid.index}__].contactedBy}" >
+                                                                <label th:for="${#ids.next('ContactedBy')}" th:text="${contact}"></label>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                    <td>
+                                                        <textarea rows="2" cols="50" th:field="*{candidateList[__${candid.index}__].candidateFeedback}"> </textarea>
+                                                    </td>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </section>
@@ -222,6 +219,7 @@
                             </div>
 
                         </div>
+                    </form>
                 </div>
             </div>
 

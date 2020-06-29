@@ -26,6 +26,24 @@
     <script src="@{js/respond.min.js}"></script>
     <script src="@{js/lte-ie7.js}"></script>
     <![endif]-->
+
+
+    <style>
+
+        div.a{
+            font-size: 150px;
+
+        }
+
+        a.countLink{
+            color: #ffffff;
+            text-underline: #ffffff;
+        }
+
+        a:hover{
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
@@ -90,7 +108,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a class="" th:href="@{/reviewBillingEntry}">
+                    <a class="countLink" target="_blank" th:href="@{/reviewBillingEntry}">
                         <i class="icon_search-2"></i>
                         <span>Review Billing Entry</span>
                     </a>
@@ -108,9 +126,9 @@
                     </a>
                 </li>
                 <li>
-                    <a class="" th:href="@{/doccontrolBillingEntry}">
+                    <a class="" th:href="@{/forSignatureBilling}">
                         <i class="icon_folder"></i>
-                        <span>Documents Control</span>
+                        <span>For Signature </span>
                     </a>
                 </li>
                 <li class="sub-menu">
@@ -144,6 +162,102 @@
                 </div>
             </div>
             <!-- Start of your page content -->
+
+            <div class="row">
+                <div class="col-lg-2">
+                    <br/>
+                    <h3>Total Accomplished</h3>
+                </div>
+                <div class="col-lg-5">
+                    <div class="a">
+                        <label th:text="${accompPercent}">98</label> <label>%</label>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="row">
+                        <br/>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h4>Total No. of Bills Reviewed:</h4>
+                        </div>
+                        <div class="col-lg-6">
+                            <h4 th:text="${totalRevCount}"> 5 </h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h4>Total No. of Bills Verified:</h4>
+                        </div>
+                        <div class="col-lg-6">
+                            <h4 th:text="${totalVerCount}"> 5 </h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h4>Total No. of Bills Audited:</h4>
+                        </div>
+                        <div class="col-lg-6">
+                            <h4 th:text="${totalAudCount}"> 5 </h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h4>Total No. of Bills Signed:</h4>
+                        </div>
+                        <div class="col-lg-6">
+                            <h4 th:text="${totalSigCount}"> 5 </h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h4>Total No. of Check Created:</h4>
+                        </div>
+                        <div class="col-lg-6">
+                            <h4 th:text="${totalPreCount}"> 5 </h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h4>Total No. of Checks Issued:</h4>
+                        </div>
+                        <div class="col-lg-6">
+                            <h4 th:text="${totalIssCount}"> 2</h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h4>Total No. of Bills Completed:</h4>
+                        </div>
+                        <div class="col-lg-6">
+                            <h4 th:text="${compSize}"> 2</h4>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <br/>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                   <section class="panel-heading"> Pending Task</section>
+                </div>
+            </div>
+            <div class="row">
+                <br/>
+                <br/>
+            </div>
             <div class="row">
                 <div class="col-lg-12">
 
@@ -161,7 +275,12 @@
                         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                             <div class="info-box brown-bg">
                                 <i class="icon_search-2"></i>
-                                <div class="count"><span th:text="${revCount}"></span> </div>
+                                <div class="count">
+                                    <a class="countLink" th:href="@{/reviewBillingEntry}">
+                                        <span th:text="${revCount}"></span>
+                                    </a>
+
+                                </div>
                                 <div class="title">Bill Reviewed</div>
                                 <div> pending task </div>
                             </div>
@@ -172,7 +291,11 @@
                         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                             <div class="info-box dark-bg">
                                 <i class="icon_phone"></i>
-                                <div class="count"><span th:text="${verCount}"></span>  </div>
+                                <div class="count">
+                                    <a class="countLink" th:href="@{/verifyBillingEntry}">
+                                        <span th:text="${verCount}"></span>
+                                    </a>
+                                </div>
                                 <div class="title">Bill Verified</div>
                                 <div> pending task </div>
                             </div>
@@ -183,16 +306,81 @@
                         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                             <div class="info-box green-bg">
                                 <i class="icon_document_alt"></i>
-                                <div class="count"><span th:text="${audCount}"></span> </div>
+                                <div class="count">
+                                    <a class="countLink" th:href="@{/viewBillsForAudit}">
+                                        <span th:text="${audCount}"></span>
+                                    </a>
+
+                                </div>
                                 <div class="title">Bill Audited</div>
                                 <div> pending task </div>
                             </div>
                             <!--/.info-box-->
                         </div>
                         <!--/.col-->
-
                     </div>
                     <!--/.row-->
+
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <div class="info-box lime-bg">
+                                <i class="icon_document_alt"></i>
+                                <div class="count">
+                                    <a class="countLink" th:href="@{/forSignatureBilling}">
+                                        <span th:text="${sigCount}"></span>
+                                    </a>
+
+                                </div>
+                                <div class="title">Bill Signed</div>
+                                <div> pending task </div>
+                            </div>
+                            <!--/.info-box-->
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <div class="info-box orange-bg">
+                                <i class="icon_document_alt"></i>
+                                <div class="count">
+                                    <a class="countLink" th:href="@{/prepareChecks}">
+                                        <span th:text="${prepCount}"></span>
+                                    </a>
+
+                                </div>
+                                <div class="title">Check Prepared</div>
+                                <div> pending task </div>
+                            </div>
+                            <!--/.info-box-->
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <div class="info-box purple-bg">
+                                <i class="icon_document_alt"></i>
+                                <div class="count">
+                                    <a class="countLink" th:href="@{/releaseChecks}">
+                                        <span th:text="${issueCount}"></span>
+                                    </a>
+                                </div>
+                                <div class="title">Check Released</div>
+                                <div> pending task </div>
+                            </div>
+                            <!--/.info-box-->
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <div class="info-box red-bg">
+                                <i class="icon_document_alt"></i>
+                                <div class="count">
+                                    <a class="countLink" th:href="@{/viewAllBillingEntry}">
+                                        <span th:text="${findings}"></span>
+                                    </a>
+
+                                </div>
+                                <div class="title">Bill with Findings </div>
+                                <div> pending task </div>
+                            </div>
+                            <!--/.info-box-->
+                        </div>
+                    </div>
 
 
 

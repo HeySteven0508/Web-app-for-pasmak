@@ -8,7 +8,9 @@ import com.pasmakms.demo.services.CandidateEntryService;
 import com.pasmakms.demo.otherData.ListItem;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -45,13 +47,21 @@ public class kimController {
         BillingEntryNotes billingEntryNotes = billingEntryNotesService.get((id));
         List<CandidateEntry> candidateEntries = candidateEntryService.findAllByCandidateEnrolled(id);
 
-        listItem = new ListItem();
-        List<String> documentTypeList = listItem.getDocumentTypeList();
+        Long candidateID = candidateEntries.get(0).getId();
+        String DVNo = candidateEntries.get(0).getCandidateCheckDetails().getCandidateDvno();
 
+        listItem = new ListItem();
+
+
+        List<String> documentTypeList = listItem.getChecklist(billingEntry.getCategory(),billingEntry.getTypeOfScholar());
+
+        List<String> myChecklist = listItem.getChecklist(billingEntry.getCategory(),billingEntry.getTypeOfScholar());
         model.addAttribute("billEntry", billingEntry);
         model.addAttribute("billNotes",billingEntryNotes);
         model.addAttribute("candidateLists", candidateEntries);
         model.addAttribute("myChecklist", documentTypeList);
+        model.addAttribute("candidateID",candidateID);
+        model.addAttribute("DVNo",DVNo);
 
 
 
@@ -59,17 +69,42 @@ public class kimController {
 
     }
 
-    @RequestMapping("/submitToPrepareChecks")
-    public String submitBillToPrepareChecks(Model model, @RequestParam(name = "id") int id){
+
+    @RequestMapping("/forSignature")
+    public String billForSignature(@RequestParam(name = "id") int id){
+
         BillingEntry billingEntry = billingEntryService.get(id);
         BillingEntryNotes billingEntryNotes = billingEntryNotesService.get(id);
-        billingEntryNotes.addBillingNotes("Prepare Checks");
-        billingEntry.setBillStatus("Prepare Checks");
+        billingEntryNotes.addBillingNotes("For Signature");
+        billingEntry.setBillStatus("For Signature");
         billingEntryService.save(billingEntry);
+
 
         return "redirect:/viewBillsForAudit";
     }
 
+    @RequestMapping("/addDVNo")
+    public String addDVNo(@RequestParam(name = "id") int id, Model model){
+
+        CandidateEntry candidateEntry = candidateEntryService.get(id);
+
+        BillingEntry billingEntry = billingEntryService.get(candidateEntry.getCandidateEnroll());
+
+        model.addAttribute("billEntry",billingEntry);
+        model.addAttribute("candidateEntry",candidateEntry);
+
+        return "addDVNo";
+    }
+
+    @RequestMapping(value = "/saveDVNo", method = RequestMethod.POST)
+    public String saveDVNo(@ModelAttribute CandidateEntry candidateEntry,@RequestParam(name = "id") int id, @RequestParam(name = "billId") int billId){
+        CandidateEntry myCandidate = candidateEntryService.getCandidateById(id);
+        myCandidate.getCandidateCheckDetails().setCandidateDvno(candidateEntry.getCandidateCheckDetails().getCandidateDvno());
+
+        candidateEntryService.save(myCandidate);
+
+        return "redirect:/viewAuditBillEntryDetail?id=" + billId;
+    }
 
 
 

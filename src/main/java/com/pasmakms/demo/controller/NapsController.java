@@ -1,6 +1,7 @@
 package com.pasmakms.demo.controller;
 
 import com.pasmakms.demo.domain.*;
+import com.pasmakms.demo.otherData.DateToday;
 import com.pasmakms.demo.services.*;
 import com.pasmakms.demo.otherData.ListItem;
 import lombok.extern.slf4j.Slf4j;
@@ -38,20 +39,93 @@ public class NapsController {
     // dashboard
     @RequestMapping("/dashboard")
     public String viewLoginPage(Model model){
+
         List<BillingEntry> newBill = BillingEntryService.listAll();
         List<BillingEntry> revBill = BillingEntryService.listAllForReview();
         List<BillingEntry> verBill = BillingEntryService.listAllForVerify();
         List<BillingEntry> audBill = BillingEntryService.listAllForAudit();
+        List<BillingEntry> signBill = BillingEntryService.listAllForSignature();
+        List<BillingEntry> prepareCheck = BillingEntryService.listAllForPrepareChecks();
+        List<BillingEntry> issueCheck = BillingEntryService.listAllForCheckIssuance();
+        List<BillingEntry> completed = BillingEntryService.listAllForCompleted();
+        List<BillingEntry> findings = BillingEntryService.listAllReturn();
 
+
+        //for percentage
+        int accomplishPercent;
+
+        //for total number
+        int totalRevCount = 0; // Total No. of Reviewed bills
+        int totalVerCount = 0;// Total No. of Verified bills
+        int totalAudCount = 0;// Total No. of Audited bills
+        int totalSigCount = 0;// Total No. of Signed bills
+        int totalPreCount = 0;// Total No. of Prepared checks
+        int totalIssCount = 0;// Total No. of Issued checks
+
+
+
+        // counting the total numbers
+        List<BillingEntryNotes> billingEntryNotesList = billingEntryNotesService.listAll();
+
+        for(int i = 0; i<billingEntryNotesList.size(); i++){
+            if(billingEntryNotesList.get(i).getBillChecked() != null){
+                totalRevCount++;
+            }
+            if(billingEntryNotesList.get(i).getBillVerified() != null){
+                totalVerCount++;
+            }
+            if(billingEntryNotesList.get(i).getBillAudited() != null){
+                totalAudCount++;
+            }
+            if(billingEntryNotesList.get(i).getBillDocControl() != null){
+                totalSigCount++;
+            }
+            if(billingEntryNotesList.get(i).getBillCheckPrepare() != null){
+                totalPreCount++;
+            }
+            if(billingEntryNotesList.get(i).getBillCheckRelease() != null){
+                totalIssCount++;
+            }
+
+        }
+
+
+
+        // Pending
         int newSize = newBill.size();
         int revSize = revBill.size();
         int verSize = verBill.size();
         int audSize = audBill.size();
+        int sigSize = signBill.size();
+        int prepSize = prepareCheck.size();
+        int issueSize = issueCheck.size();
+        int compSize = completed.size();
+        int withFindings = findings.size();
+
+        // Total Completed
+        accomplishPercent = (int)(((double)compSize/newSize) * 100);
+
+
 
         model.addAttribute("newCount",newSize);
         model.addAttribute("revCount",revSize);
         model.addAttribute("verCount",verSize);
         model.addAttribute("audCount",audSize);
+        model.addAttribute("sigCount",sigSize);
+        model.addAttribute("prepCount", prepSize);
+        model.addAttribute("issueCount",issueSize);
+        model.addAttribute("compSize",compSize);
+        model.addAttribute("findings",withFindings);
+        model.addAttribute("accompPercent",accomplishPercent);
+
+        model.addAttribute("totalRevCount",totalRevCount);
+        model.addAttribute("totalVerCount",totalVerCount);
+        model.addAttribute("totalAudCount",totalAudCount);
+        model.addAttribute("totalSigCount",totalSigCount);
+        model.addAttribute("totalPreCount",totalPreCount);
+        model.addAttribute("totalIssCount",totalIssCount);
+
+
 
 
         return "index";
@@ -118,7 +192,6 @@ public class NapsController {
     // Successful edit of Bill Entry
     @RequestMapping(value = "/editBillEntrySuccessful",method = RequestMethod.POST)
     public String editBillEntry(@ModelAttribute("billingEntry") BillingEntry billingEntry , @RequestParam(name = "id") int id){
-       log.info(billingEntry.toString());
         BillingEntryService.save(billingEntry);
         return "redirect:/viewBillEntry?id=" + id;
     }
@@ -219,9 +292,18 @@ public class NapsController {
 
     @RequestMapping(value = "/returnSuccessfully",method = RequestMethod.POST)
     public String returnBillingSuccessfully(@ModelAttribute("billingFeedback") BillingFeedback billingFeedback, @RequestParam(name = "id") int id ){
+        DateToday dateToday = new DateToday();
+        try{
+            billingFeedback.setBillDate(dateToday.getCurrentDateToday());
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+
         billingFeedbackService.save(billingFeedback);
         BillingEntry billingEntry = BillingEntryService.get(id);
-        billingEntry.setBillStatus("Returned Documents");
+        billingEntry.setBillStatus("with Findings");
         BillingEntryService.save(billingEntry);
         return "redirect:/dashboard";
 
@@ -272,15 +354,35 @@ public class NapsController {
 
             }
         }
-        System.out.println(sample.toString());
-
-        log.info(billingFeedbacks.toString());
-
         model.addAttribute("billEntry", billingEntry);
         model.addAttribute("billNotes",billingEntryNotes);
         model.addAttribute("billFeedback",billingFeedbacks);
 
         return "viewMoreInfoBilling";
+    }
+
+
+
+    @RequestMapping("/viewMoreBillInfoForFinding")
+    public String viewBillInfoForFindings(Model model, @RequestParam(name = "id") int id){
+
+        BillingEntry billingEntry = BillingEntryService.get(id);
+        BillingEntryNotes billingEntryNotes = billingEntryNotesService.get(id);
+        List<BillingFeedback> billingFeedbacks = billingFeedbackService.listAlFeedbackByBillID(id);
+        List<BillingFeedback> sample = new ArrayList<>();
+        for(BillingFeedback feedback:billingFeedbacks){
+            if(!feedback.getBillFeedback().equalsIgnoreCase("")){
+                sample.add(feedback);
+            }
+            else{
+
+            }
+        }
+        model.addAttribute("billEntry", billingEntry);
+        model.addAttribute("billNotes",billingEntryNotes);
+        model.addAttribute("billFeedback",billingFeedbacks);
+
+        return "viewMoreInfoBillingForFindings";
     }
 
 

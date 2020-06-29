@@ -172,11 +172,11 @@
                                 </tr>
                                 <tr>
                                     <td>Billing ID No.</td>
-                                    <td th:text="${billEntryTag.billingIdNo}"> #Category</td>
+                                    <td th:text="${billEntry.billingIdNo}"> #Category</td>
                                 </tr>
                                 <tr>
                                     <td>Document Type</td>
-                                    <td th:text="${billEntryTag.documentType}"> #Category</td>
+                                    <td th:text="${billEntry.documentType}"> #Category</td>
                                 </tr>
                                 <tr>
                                     <td>Category</td>
@@ -221,77 +221,186 @@
                     <section class="panel">
                         <header class="panel-heading">
                             <div class="col-lg-6">
-                                    Billing Requirment Checklist
+                                    Billing Requirement Checklist
                             </div>
                         </header>
+
                         <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <h3 th:text="${billEntry.category} + ' - (' + ${billEntry.typeOfScholar} + ')'"></h3>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <br/>
-                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-1">
+                                    </div>
+                                    <div class="col-sm-11">
+                                        <h3>
+                                            <label th:text="${billEntry.category}"></label>
+                                            <label> - </label>
+                                            <label th:text="${billEntry.typeOfScholar}"></label>
 
-                            <div class="row">
-                                <div class="col-lg-1">
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-
-                                </div>
-                                <div th:each="checklist,check : ${myChecklist}">
-
-                                    <input type="checkbox" th:id="${check.index}" th:name="${check.index}" value= 1>
-                                    <label th:for="${check.index}" th:text="${checklist}"> I have a bike</label><br/>
-
+                                        </h3>
+                                    </div>
                                 </div>
 
-                            </div>
+                                <div class="row">
+                                    <div class="col-sm-1">
+                                    </div>
 
-                            <div class="row">
-                                <div class="col-lg-1">
+                                    <div class="col-sm-11" th:if="${myChecklist} == null">
+                                        <h3> No requirement found. please click the 'back' to choose approriate category for this bill.</h3>
 
-                                </div>
-                                <div>
-                                    <a class="btn btn-success" onclick="checkCountFunction()" name="btnVerify"> Check </a>
-                                    <br/>
-                                </div>
-                            </div>
+                                    </div>
 
-                            <div class="row"><br/></div>
-
-                            <div class="row">
-                                <div class="col-lg-5" align="right">
-                                    <span> Submit Billing document to </span>
-                                </div>
-                                <div class="col-lg-7">
-                                    <div class="btn-group">
-                                        <button data-toggle="dropdown" id="myBtn" name="myBtn" class="btn btn-default dropdown-toggle" type="button" disabled> Submit To <span class="caret"></span> </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Document Control</a></li>
-                                            <li><a th:href="@{/submitToPrepareChecks(id=${billEntry.billId})}">Preparing Checks</a></li>
+                                    <div class="col-sm-11" th:unless="${myChecklist} == null">
+                                        <ul>
+                                            <li th:each="checklist,count : ${myChecklist}">
+                                                <input type="checkbox" th:value="${checklist}" th:id="${count.index}">
+                                                <label th:for="${#ids.next('checklist')}"
+                                                       th:text="${checklist}">sample</label>
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" id="CboxDV">
+                                                <label for="CboxDV"> Add DV No. </label>
+                                            </li>
                                         </ul>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-2">
+
+                                    </div>
+                                    <div>
+                                        <a class="btn btn-primary" onclick="checkCountFunction()" name="btnVerify"> Verify </a>
+                                    </div>
+                                </div>
+
+                                <div class ="row">
+                                    <br/>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="alert alert-success fade in" hidden id="divAlert">
+                                        <button data-dismiss="alert" class="close close-sm" type="button">
+                                            <i class="icon-remove"></i>
+                                        </button>
+                                        <strong>Done Checking! </strong> The billing document is Correct and Complete. <br/>
+                                        Click the button below to transfer the document to Check Preparation
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-sm-1">
+
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <a th:href="@{/forSignature(id=${billEntry.billId})}">
+                                            <button class="btn btn-success" style="display: none" id="btnForSignature"> For Signature</button>
+                                        </a>
+
+                                    </div>
+                                    <div class="col-sm-2">
+
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <a class="btn btn-danger" th:href="@{/returnDocuments(id=${billEntry.billId})}" ><span class="icon_target"></span> Add Findings </a>
+
+                                    </div>
+                                    <div class="col-sm-1">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="form-group"  th:if="${billEntry.category != 'Allowance'}">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <section class="panel">
+                            <header class="panel-heading">
+                                List of Candidates:
+                            </header>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <section class="panel">
+                                            <header class="panel-heading">
+                                                Candidates Enrolled:
+                                            </header>
+
+                                            <table class="table table-striped table-advance table-hover">
+                                                <tbody>
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>SG No.</th>
+                                                    <th><i class="icon_profile"></i> Full Name</th>
+                                                    <th><i class="icon_mobile"></i> Mobile</th>
+                                                    <th>Contacted By</th>
+                                                    <th>Remarks</th>
+                                                    <th th:if="${billEntry.category == 'Allowances'}"> DV No.</th>
+                                                </tr>
+                                                <tr th:each="candidatelist, candid : ${candidateLists}">
+                                                    <td th:text="${candid.index + 1}">1</td>
+                                                    <td th:text="${candidatelist.candidateSgno}"></td>
+                                                    <td th:text="${candidatelist.candidateName}">Angeline Mcclain</td>
+                                                    <td th:text="${candidatelist.candidatePhone}">176-026-5992</td>
+                                                    <td th:text="${candidatelist.contactedBy}"> </td>
+                                                    <td th:text="${candidatelist.candidateFeedback}"></td>
+                                                    <td th:if="${billEntry.category == 'Allowances'}">
+                                                        <label th:text="${candidatelist.candidateCheckDetails.candidateDvno}"></label>
+                                                        &nbsp;&nbsp;&nbsp;
+                                                        <a th:href="@{/addDVNo(id=${candidatelist.id})}">
+                                                            Edit
+                                                        </a>
+                                                    </td>
+
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <section class="panel">
+                            <header class="panel-heading">
+                                Add DV No.
+                            </header>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <h4 th:text="${billEntry.centerName}"></h4>
+                                    </div>
+
+                                    <div class="col-lg-6" th:if="${DVNo == null}">
+                                        <a class="btn btn-primary" th:href="@{/addDVNo(id=${candidateID})}"> Add DV</a>
+                                    </div>
+
+                                    <div class="col-lg-6"  th:unless="${DVNo == null}">
+                                        <h4 th:text="${DVNo}"></h4>  &nbsp; &nbsp; &nbsp; &nbsp;
+                                        <a th:href="@{/addDVNo(id=${candidateID})}"> Edit</a>
                                     </div>
 
                                 </div>
                             </div>
-
-                        </div>
-                    </section>
+                        </section>
+                    </div>
                 </div>
 
 
             </div>
 
-
-            <div class="row">
+            <!-- If the billing is  Allowance -->
+            <div class="row" th:unless="${billEntry.category != 'Allowance'}">
                 <div class="col-lg-12">
                     <section class="panel">
                         <header class="panel-heading">
@@ -309,32 +418,43 @@
                                             <tbody>
                                             <tr>
                                                 <th>No.</th>
+                                                <th>SG No.</th>
                                                 <th><i class="icon_profile"></i> Full Name</th>
                                                 <th><i class="icon_mobile"></i> Mobile</th>
+                                                <th>Contacted By</th>
+                                                <th>Remarks</th>
+                                                <th>DV No.</th>
                                             </tr>
                                             <tr th:each="candidatelist, candid : ${candidateLists}">
                                                 <td th:text="${candid.index + 1}">1</td>
+                                                <td th:text="${candidatelist.candidateSgno}"></td>
                                                 <td th:text="${candidatelist.candidateName}">Angeline Mcclain</td>
                                                 <td th:text="${candidatelist.candidatePhone}">176-026-5992</td>
+                                                <td th:text="${candidatelist.contactedBy}"> </td>
+                                                <td th:text="${candidatelist.candidateFeedback}"></td>
+                                                <td th:if="${candidatelist.candidateCheckDetails.candidateDvno != null}">
+                                                  <label th:text="${candidatelist.candidateCheckDetails.candidateDvno}"></label>
+                                                   &nbsp;&nbsp;&nbsp;
+                                                    <a th:href="@{/addDVNo(id=${candidatelist.id})}">
+                                                        Edit
+                                                    </a>
+                                                </td>
+                                                <td th:unless="${candidatelist.candidateCheckDetails.candidateDvno != null}">
+                                                    <a th:href="@{/addDVNo(id=${candidatelist.id})}">
+                                                        <button class="btn btn-primary"> Add DV No. </button>
+                                                    </a>
+                                                </td>
+
+                                                </td>
                                             </tr>
                                             </tbody>
                                         </table>
                                     </section>
                                 </div>
-
                             </div>
-
-
                         </div>
                     </section>
-
                 </div>
-
-
-            </div>
-
-            <div class="row" align="center">
-                <a class="btn btn-danger" th:href="@{/returnDocuments(id=${billEntry.billId})}" ><span class="icon_target"></span> Return Billing Documents </a>
             </div>
 
         </section>
@@ -361,7 +481,6 @@
 
         var noOfChecks = 0;
         var checkboxes = [];
-        var textbox = document.getElementById("txtCount");
 
 
         // for initialization
@@ -376,14 +495,14 @@
                 noOfChecks = noOfChecks + 1;
             }
         }
-
-        if(noOfChecks == count){
-            document.getElementById("myBtn").disabled = false;
+        if(noOfChecks == count && document.getElementById("CboxDV").checked){
+            document.getElementById("divAlert").hidden = false;
+            document.getElementById("btnForSignature").style.display="block";
 
 
         }else{
             alert("The billing document must be complete before we proceed.");
-            document.getElementById("myBtn").disabled = true;
+            document.getElementById("divAlert").hidden = true;
         }
 
 

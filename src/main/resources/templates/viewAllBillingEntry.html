@@ -157,7 +157,7 @@
                                     <a data-toggle="tab" href="#viewAll">View All</a>
                                 </li>
                                 <li class="">
-                                    <a data-toggle="tab" href="#returnedBilling">Returned Billings</a>
+                                    <a data-toggle="tab" href="#returnedBilling">Billing with Findings</a>
                                 </li>
                                 <li class="">
                                     <a data-toggle="tab" href="#BillTagIdBilling">Find By Billing Tag ID </a>
@@ -218,7 +218,7 @@
                                 </div>
                                 <!-- ---------------- END VIEW ALL BILLINGS ---------------------- -->
 
-                                <!-- ---------------- VIEW RETURNED BILLINGS ---------------------- -->
+                                <!-- ---------------- VIEW BILLINGS WITH FINDINGS---------------------- -->
                                 <div id="returnedBilling" class="tab-pane">
                                     <div class="row">
                                         <div class="col-lg-12">
@@ -252,8 +252,7 @@
                                                             <td th:text="${billingEntries.billStatus}">New</td>
                                                             <td>
                                                                 <div class="btn-group">
-                                                                    <a class="btn btn-success" th:href="@{/viewBillEntry(id=${billingEntries.billId})}"><i class="icon_search"></i></a>
-                                                                    <a class="btn btn-danger" th:href="@{/deleteBillEntry(id=${billingEntries.billId})}"><i class="icon_close_alt2"></i></a>
+                                                                    <a class="btn btn-success" th:href="@{/viewMoreBillInfoForFinding(id=${billingEntries.billId})}"><i class="icon_search"></i></a>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -291,23 +290,22 @@
                                                             <tr>
                                                                 <th> No. </th>
                                                                 <th><i class="icon_id"></i> Bill Tag ID</th>
+                                                                <th><i class="icon_building"></i> Center Name </th>
+                                                                <th> Qualifications</th>
+                                                                <th> Start Of Training</th>
                                                                 <th><i class="icon_cogs"></i> Action</th>
                                                             </tr>
-                                                          <!--  <tr th:each="billID, bill : ${findByTag}">
-                                                                <td th:text="${bill.index + 1}">1</td>
+                                                            <tr th:each="billID, bill : ${allBillings}">
+                                                                <td th:text="${bill.index + 1}"></td>
+                                                                <td th:text="${billID.billingIdNo}"></td>
+                                                                <td th:text="${billID.centerName}"></td>
+                                                                <td th:text="${billID.qualification}"></td>
+                                                                <td th:text="${billID.startOfTraining}"> </td>
+                                                                <td>
+                                                                    <a class="btn btn-success"><i class="icon_search"></i></a>
+                                                                </td>
 
-                                                                <td>
-                                                                &lt;!&ndash;    th:text="${billID.billingEntryId}"> ID&ndash;&gt;
-                                                                    <span th:if="${billID.billingEntryId.equals("")}"> null</span>
-                                                                    <span th:unless="${billID.billingEntryId == null}">not null</span>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="btn-group">
-                                                                        <a class="btn btn-success" th:href="@{/viewBillEntry(id=${billingEntries.billId})}"><i class="icon_search"></i></a>
-                                                                        <a class="btn btn-danger" th:href="@{/deleteBillEntry(id=${billingEntries.billId})}"><i class="icon_close_alt2"></i></a>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>-->
+                                                            </tr>
                                                             </tbody>
                                                         </table>
                                                     </section>

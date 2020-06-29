@@ -28,16 +28,21 @@ public class BillingEntryService {
     public List<BillingEntry>listAllForVerify(){
         return billingEntryRepository.findAllByBillStatus("For Verify");
     }
+    public List<BillingEntry>listAllForCompleted(){return billingEntryRepository.findAllByBillStatus("Completed");}
 
     public List<BillingEntry>listAllForPrepareChecks(){
         return billingEntryRepository.findAllByBillStatus("Prepare Checks");
     }
-    public List<BillingEntry>ListAllForCheckIssuance(){
+    public List<BillingEntry> listAllForCheckIssuance(){
         return billingEntryRepository.findAllByBillStatus("For Issuance");
     }
 
     public List<BillingEntry>listAllReturn(){
-        return billingEntryRepository.findAllByBillStatus("Returned Documents");
+        return billingEntryRepository.findAllByBillStatus("with Findings");
+    }
+
+    public List<BillingEntry>listAllForSignature(){
+        return billingEntryRepository.findAllByBillStatus("For Signature");
     }
 
     public void save(BillingEntry billingEntry){
