@@ -6,3 +6,6 @@ This is a Spring WEB MVC application that can monitor the scholarship billing pr
 - has a report summary dashboard
 - connected to *Mysql Database
 
+
+Backend : Spring Web MVC, Thymeleaf
+Frontend: HTML/CSS/JS and Bootstrap
