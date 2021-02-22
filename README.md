@@ -7,5 +7,5 @@ This is a Spring WEB MVC application that can monitor the scholarship billing pr
 - connected to *Mysql Database
 
 
-Backend : Spring Web MVC, Thymeleaf
-Frontend: HTML/CSS/JS and Bootstrap
+### Backend : Spring Web MVC, Thymeleaf
+### Frontend: HTML/CSS/JS and Bootstrap
