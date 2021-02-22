@@ -2,15 +2,21 @@ package com.pasmakms.demo.controller;
 
 import com.pasmakms.demo.domain.*;
 import com.pasmakms.demo.otherData.DateToday;
+import com.pasmakms.demo.otherData.feedbackHolder;
 import com.pasmakms.demo.services.*;
 import com.pasmakms.demo.otherData.ListItem;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -22,23 +28,22 @@ public class NapsController {
     private BillingEntryNotesService billingEntryNotesService;
     private BillingFeedbackService billingFeedbackService;
     private CandidateCheckDetailsService candidateCheckDetailsService;
+    private UserAccountService usernameService;
     private ListItem listItem;
 
-    public NapsController(com.pasmakms.demo.services.BillingEntryService billingEntryService,
-                          CandidateEntryService candidateEntryService, BillingEntryNotesService billingEntryNotesService,
-                          BillingFeedbackService billingFeedbackService,
-                          CandidateCheckDetailsService candidateCheckDetailsService) {
-
+    public NapsController(BillingEntryService billingEntryService, CandidateEntryService candidateEntryService, BillingEntryNotesService billingEntryNotesService, BillingFeedbackService billingFeedbackService, CandidateCheckDetailsService candidateCheckDetailsService, UserAccountService usernameService) {
         BillingEntryService = billingEntryService;
         this.candidateEntryService = candidateEntryService;
         this.billingEntryNotesService = billingEntryNotesService;
         this.billingFeedbackService = billingFeedbackService;
         this.candidateCheckDetailsService = candidateCheckDetailsService;
+        this.usernameService = usernameService;
     }
 
     // dashboard
     @RequestMapping("/dashboard")
-    public String viewLoginPage(Model model){
+    public String viewDashboard(Model model, Principal principal){
+
 
         List<BillingEntry> newBill = BillingEntryService.listAll();
         List<BillingEntry> revBill = BillingEntryService.listAllForReview();
@@ -106,7 +111,12 @@ public class NapsController {
         accomplishPercent = (int)(((double)compSize/newSize) * 100);
 
 
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
 
+
+
+        model.addAttribute("accountName",user);
         model.addAttribute("newCount",newSize);
         model.addAttribute("revCount",revSize);
         model.addAttribute("verCount",verSize);
@@ -125,6 +135,8 @@ public class NapsController {
         model.addAttribute("totalPreCount",totalPreCount);
         model.addAttribute("totalIssCount",totalIssCount);
 
+        model.addAttribute("accountName",user);
+
 
 
 
@@ -133,21 +145,32 @@ public class NapsController {
 
     // display all list of billing Entry
     @RequestMapping("/viewBillingEntry")
-    public String viewAllBillingEntryPage(Model model){
+    public String viewAllBillingEntryPage(Model model, Principal principal){
         List<BillingEntry> billingEntries = BillingEntryService.listAllNew();
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
+
+
+
+        model.addAttribute("accountName",user);
         model.addAttribute("billingEntries", billingEntries);
         return "viewBillingEntry";
     }
 
     // view Billing Entry based on the billId
     @RequestMapping(path = "/viewBillEntry", method = RequestMethod.GET)
-    public ModelAndView viewBillingDetailPage(@RequestParam(value = "id") int id){
+    public ModelAndView viewBillingDetailPage(@RequestParam(value = "id") int id, Principal principal){
         BillingEntry billingEntry = BillingEntryService.get(id);
         BillingEntryNotes billingEntryNotes = billingEntryNotesService.get(id);
         List<CandidateEntry> candidateEntries = candidateEntryService.findAllByCandidateEnrolled(id);
 
         BillingFeedback billingFeedback = new BillingFeedback();
+
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
+
         ModelAndView mav = new  ModelAndView("viewBillingEntryDetail");
+        mav.addObject("accountName",user);
         mav.addObject("billEntry",billingEntry);
         mav.addObject("candidateLists",candidateEntries);
         mav.addObject("billNotes",billingEntryNotes);
@@ -157,7 +180,7 @@ public class NapsController {
 
     // show Create Billing Entry Page
     @RequestMapping("/addBillingEntry")
-    public String viewAddBillingEntryPage(Model model){
+    public String viewAddBillingEntryPage(Model model,Principal principal){
         BillingEntry billingEntry = new BillingEntry();
 
         listItem = new ListItem();
@@ -174,6 +197,12 @@ public class NapsController {
         model.addAttribute("categoryList",categoryList);
         model.addAttribute("typeOfScholarshipList",typeOfScholarshipList);
         model.addAttribute("soureOfFundList", sourceOfFundsList);
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
+
+
+
+        model.addAttribute("accountName",user);
 
         model.addAttribute("billingEntry",billingEntry);
         return "addBillingEntry";
@@ -208,11 +237,14 @@ public class NapsController {
 
     // Show Adding Candidate Page
     @RequestMapping("/addCandidateEntry")
-    public String viewAddCandidateEntryPage(Model model, @RequestParam(value = "id") int id){
+    public String viewAddCandidateEntryPage(Model model, @RequestParam(value = "id") int id,Principal principal){
 
         BillingEntry billingEntry = BillingEntryService.get(id);
         CandidateEntry candidateEntry = new CandidateEntry();
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
 
+        model.addAttribute("accountName",user);
         model.addAttribute("candidateEntry",candidateEntry);
         model.addAttribute("billingEntry",billingEntry);
         model.addAttribute("billId",id);
@@ -255,7 +287,7 @@ public class NapsController {
     }
 
     @RequestMapping("/editBillingEntry")
-    public ModelAndView editBillingEntryPage(@RequestParam(value = "Billid") int id){
+    public ModelAndView editBillingEntryPage(@RequestParam(value = "Billid") int id,Principal principal){
         ModelAndView mav = new ModelAndView("editBillingEntry");
         BillingEntry billingEntry = BillingEntryService.get(id);
 
@@ -265,7 +297,11 @@ public class NapsController {
         List<String> categoryList = listItem.getCategoryList();
         List<String> typeOfScholarshipList = listItem.getTypeOfScholarList();
         List<String> sourceOfFundsList = listItem.getSouceOfFundsList();
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
 
+
+        mav.addObject("accountName",user);
         mav.addObject("centerList",centerList);
         mav.addObject("qualificationList",qualificationList);
         mav.addObject("categoryList",categoryList);
@@ -278,10 +314,16 @@ public class NapsController {
     }
 
     @RequestMapping("/returnDocuments")
-    public String returnBillingDocumentPage(Model model, @RequestParam(name = "id") int id){
+    public String returnBillingDocumentPage(Model model, @RequestParam(name = "id") int id, Principal principal){
 
         BillingEntry billingEntry = BillingEntryService.get(id);
         BillingFeedback billingFeedback = new BillingFeedback();
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
+
+        model.addAttribute("accountName",user);
+
+
 
         model.addAttribute("billingFeedback",billingFeedback);
         model.addAttribute("billEntry", billingEntry);
@@ -291,15 +333,19 @@ public class NapsController {
     }
 
     @RequestMapping(value = "/returnSuccessfully",method = RequestMethod.POST)
-    public String returnBillingSuccessfully(@ModelAttribute("billingFeedback") BillingFeedback billingFeedback, @RequestParam(name = "id") int id ){
+    public String returnBillingSuccessfully(Principal principal,@ModelAttribute("billingFeedback") BillingFeedback billingFeedback, @RequestParam(name = "id") int id ){
         DateToday dateToday = new DateToday();
         try{
             billingFeedback.setBillDate(dateToday.getCurrentDateToday());
+            String name = principal.getName();
+            UserAccount user = usernameService.getUserAccount(name);
+            billingFeedback.setUser(user.getUsername());
 
         }catch (Exception ex){
             ex.printStackTrace();
         }
 
+        billingFeedback.setBillRemarks("Add Findings");
 
         billingFeedbackService.save(billingFeedback);
         BillingEntry billingEntry = BillingEntryService.get(id);
@@ -310,11 +356,14 @@ public class NapsController {
     }
 
     @RequestMapping("viewAllBillingEntry")
-    public String viewAllBillingList(Model model){
+    public String viewAllBillingList(Model model,Principal principal){
 
         List<BillingEntry> billingEntryList = BillingEntryService.listAll();
         List<BillingEntry> returnedBillingEntryList = BillingEntryService.listAllReturn();
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
 
+        model.addAttribute("accountName",user);
         model.addAttribute("returnBillings",returnedBillingEntryList);
         model.addAttribute("allBillings",billingEntryList);
         return "viewAllBillingEntry";
@@ -340,7 +389,12 @@ public class NapsController {
 
 
     @RequestMapping("/viewMoreBillInfo")
-    public String viewBillInfo(Model model, @RequestParam(name = "id") int id){
+    public String viewBillInfo(Model model, @RequestParam(name = "id") int id, Principal principal){
+
+        Date date;
+        DateFormat outputFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String name = principal.getName();
+        UserAccount myUser = usernameService.getUserAccount(name);
 
         BillingEntry billingEntry = BillingEntryService.get(id);
         BillingEntryNotes billingEntryNotes = billingEntryNotesService.get(id);
@@ -354,9 +408,28 @@ public class NapsController {
 
             }
         }
+
+        List<feedbackHolder> feedbackHolders = new ArrayList<>(sample.size());
+        String feedBackDate,user,feedback,billRemarks;
+
+        for (int i =0;i<sample.size();i++)
+        {
+            date = sample.get(i).getBillDate();
+            feedBackDate = outputFormat.format(sample.get(i).getBillDate());
+            user = name;
+            feedback = sample.get(i).getBillFeedback();
+            billRemarks = sample.get(i).getBillRemarks();
+
+            feedbackHolders.add(new feedbackHolder(feedBackDate,user,feedback,billRemarks));
+
+        }
+
+        model.addAttribute("accountName",myUser);
+
+
         model.addAttribute("billEntry", billingEntry);
         model.addAttribute("billNotes",billingEntryNotes);
-        model.addAttribute("billFeedback",billingFeedbacks);
+        model.addAttribute("billFeedback",feedbackHolders);
 
         return "viewMoreInfoBilling";
     }
@@ -364,9 +437,18 @@ public class NapsController {
 
 
     @RequestMapping("/viewMoreBillInfoForFinding")
-    public String viewBillInfoForFindings(Model model, @RequestParam(name = "id") int id){
+    public String viewBillInfoForFindings(Model model, @RequestParam(name = "id") int id , Principal principal){
+        listItem = new ListItem();
+        Date date;
+        DateFormat outputFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+        String name = principal.getName();
+        UserAccount myUser = usernameService.getUserAccount(name);
+
+        BillingEntry dummyBillingEntry = new BillingEntry();
 
         BillingEntry billingEntry = BillingEntryService.get(id);
+        List<String> billStatusList =listItem.getBillStatusList();
         BillingEntryNotes billingEntryNotes = billingEntryNotesService.get(id);
         List<BillingFeedback> billingFeedbacks = billingFeedbackService.listAlFeedbackByBillID(id);
         List<BillingFeedback> sample = new ArrayList<>();
@@ -378,11 +460,52 @@ public class NapsController {
 
             }
         }
+
+        List<feedbackHolder> feedbackHolders = new ArrayList<>(sample.size());
+        String feedBackDate,user,feedback,billRemarks;
+
+        for (int i =0;i<sample.size();i++)
+        {
+            date = sample.get(i).getBillDate();
+            feedBackDate = outputFormat.format(sample.get(i).getBillDate());
+            user = myUser.getAccountName();
+            feedback = sample.get(i).getBillFeedback();
+            billRemarks = sample.get(i).getBillRemarks();
+
+            feedbackHolders.add(new feedbackHolder(feedBackDate,user,feedback,billRemarks));
+
+        }
+        model.addAttribute("myBillEntry",dummyBillingEntry);
+        model.addAttribute("billStatus",billStatusList);
         model.addAttribute("billEntry", billingEntry);
         model.addAttribute("billNotes",billingEntryNotes);
-        model.addAttribute("billFeedback",billingFeedbacks);
+        model.addAttribute("billFeedback",feedbackHolders);
+        model.addAttribute("accountName",myUser);
 
         return "viewMoreInfoBillingForFindings";
+    }
+
+    @RequestMapping(value = "/changeBillStatus",method = RequestMethod.POST)
+    public String updateBillStatus(@RequestParam(name = "id") int Billid, @ModelAttribute BillingEntry billingEntry){
+
+
+        DateToday dateToday = new DateToday();
+        List<BillingFeedback> billingFeedback = billingFeedbackService.listAlFeedbackByBillID(Billid);
+
+        BillingFeedback getIDBillingFeedback = billingFeedbackService.get(billingFeedback.get(0).getId());
+        BillingFeedback addBillingFeedback = new BillingFeedback(Billid,
+                                                        "Removed Findings and set the bill to '" + billingEntry.getBillStatus() +"' ",
+                                                        dateToday.getCurrentDateToday(),
+                                                        "user",
+                                                         "Complied");
+
+
+        BillingEntry myBillingEntry = BillingEntryService.get(Billid);
+        myBillingEntry.setBillStatus(billingEntry.getBillStatus());
+        BillingEntryService.save(myBillingEntry);
+        billingFeedbackService.save(addBillingFeedback);
+
+        return "redirect:/viewAllBillingEntry";
     }
 
 

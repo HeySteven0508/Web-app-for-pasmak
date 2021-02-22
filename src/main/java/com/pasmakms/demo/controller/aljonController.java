@@ -6,6 +6,7 @@ import com.pasmakms.demo.services.BillingEntryNotesService;
 import com.pasmakms.demo.services.BillingEntryService;
 import com.pasmakms.demo.services.CandidateEntryService;
 import com.pasmakms.demo.otherData.ListItem;
+import com.pasmakms.demo.services.UserAccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -26,24 +28,29 @@ public class aljonController {
     private BillingEntryService BillingEntryService;
     private CandidateEntryService candidateEntryService;
     private BillingEntryNotesService billingEntryNotesService;
+    private UserAccountService usernameService;
     private ListItem listItem;
 
-
-    public aljonController(com.pasmakms.demo.services.BillingEntryService billingEntryService, CandidateEntryService candidateEntryService, BillingEntryNotesService billingEntryNotesService) {
+    public aljonController(com.pasmakms.demo.services.BillingEntryService billingEntryService, CandidateEntryService candidateEntryService, BillingEntryNotesService billingEntryNotesService, UserAccountService usernameService) {
         BillingEntryService = billingEntryService;
         this.candidateEntryService = candidateEntryService;
         this.billingEntryNotesService = billingEntryNotesService;
+        this.usernameService = usernameService;
     }
 
     @RequestMapping("/reviewBillingEntry")
-    public String viewLoginPage(Model model) {
+    public String viewLoginPage(Model model, Principal principal) {
         List<BillingEntry> billingEntries = BillingEntryService.listAllForReview();
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
+
+        model.addAttribute("accountName",user);
         model.addAttribute("billingEntries", billingEntries);
         return "reviewBillingEntry";
     }
 
     @RequestMapping(path = "/viewReviewBillEntryDetail")
-    public ModelAndView viewBillingDetailPage(@RequestParam(value = "id") int id) {
+    public ModelAndView viewBillingDetailPage(@RequestParam(value = "id") int id,Principal principal) {
         BillingEntry billingEntry = BillingEntryService.get(id);
         BillingEntryNotes billingEntryNotes = billingEntryNotesService.get(id);
         listItem = new ListItem();
@@ -69,6 +76,11 @@ public class aljonController {
         List<String> documentType = listItem.getDocumentTypeList();
 
         List<CandidateEntry> candidateEntries = candidateEntryService.findAllByCandidateEnrolled(id);
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
+
+        mav.addObject("accountName",user);
+
 
 
         mav.addObject("billEntry", billingEntry);
@@ -137,16 +149,26 @@ public class aljonController {
     }
 
     @RequestMapping("/forSignatureBilling")
-    public String viewForSignatureBilling(Model model){
+    public String viewForSignatureBilling(Model model, Principal principal){
         List<BillingEntry> billingEntries = BillingEntryService.listAllForSignature();
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
+
+        model.addAttribute("accountName",user);
+
 
         model.addAttribute("billingEntries",billingEntries);
 
         return "viewForSignature";
     }
     @RequestMapping("/viewForSignatureDetail")
-    public String viewForSignatureBillingDetail(Model model, @RequestParam(name = "id") int id){
+    public String viewForSignatureBillingDetail(Model model, @RequestParam(name = "id") int id, Principal principal){
         BillingEntry billingEntry = BillingEntryService.get(id);
+
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
+
+        model.addAttribute("accountName",user);
 
         model.addAttribute("billEntry",billingEntry);
 

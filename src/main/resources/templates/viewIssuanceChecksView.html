@@ -24,9 +24,16 @@
     <script src="@{js/respond.min.js}"></script>
     <script src="@{js/lte-ie7.js}"></script>
     <![endif]-->
+    <style>
+        li.removeBullet{
+            list-style-type: none;
+        }
+    </style>
+
 </head>
 
 <body>
+
 <!-- container section start -->
 <section id="container" class="">
     <!--header start-->
@@ -42,24 +49,35 @@
 
         <div class="top-nav notification-row">
             <!-- user login dropdown start-->
-            <li class="dropdown">
+            <!--<li class="dropdown">
                 <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="profile-ava">
+                            <img alt="" src="img/avatar1_small.jpg">
+                        </span>
+                    <span class="username" th:text="${accountName.accountName}">#USERNAME</span>
+                    <b class="caret"></b>
+                </a>-->
+
+            <!-- user login dropdown start-->
+            <li class="dropdown removeBullet">
+                <a data-toggle="dropdown" class="dropdown-toggle " href="#">
                             <span class="profile-ava">
-                                <img alt="" src="img/avatar1_small.jpg">
+                                <img th:src="@{/images/avatar1_small.jpg}">
                             </span>
-                    <span class="username">#USERNAME</span>
+                    <span class="username" th:text="${accountName.accountName}">Jenifer Smith</span>
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu extended logout">
                     <div class="log-arrow-up"></div>
+                    <li class="eborder-top">
+                        <a href="#"><i class="icon_profile"></i> Change my Password</a>
+                    </li>
                     <li>
-                        <a href="#"><i class="icon_key_alt"></i> Log Out</a>
+                        <a href="#"><i class="icon_mail_alt"></i> Log out</a>
                     </li>
                 </ul>
             </li>
-            <!-- user login dropdown end -->
-            </ul>
-            <!-- notificatoin dropdown end-->
+
         </div>
     </header>
     <!--header end-->
@@ -70,7 +88,7 @@
             <!-- sidebar menu start-->
             <ul class="sidebar-menu">
                 <li class="">
-                    <a class="" href="#">
+                    <a class="" th:href="@{/dashboard}">
                         <i class="icon_house_alt"></i>
                         <span>Dashboard</span>
                     </a>
@@ -82,33 +100,33 @@
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                        <li> <a class="" href="#"> View Billing Entry </a> </li>
-                        <li> <a class="" href="#"> Create Billing Entry </a> </li>
-                        <li> <a class="" href="#">Add Candidates</a></li>
+                        <li> <a class="" th:href="@{/viewBillingEntry}"> View Billing Entry </a> </li>
+                        <li> <a class="" th:href="@{/addBillingEntry}"> Create Billing Entry </a> </li>
+                        <li> <a class="" th:href="@{/viewAllBillingEntry}">View All Documents</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a class="" href="#">
+                    <a class="countLink" target="_blank" th:href="@{/reviewBillingEntry}">
                         <i class="icon_search-2"></i>
                         <span>Review Billing Entry</span>
                     </a>
                 </li>
                 <li>
-                    <a class="" href="#">
+                    <a class="" th:href="@{/verifyBillingEntry}">
                         <i class="icon_phone"></i>
                         <span>Verify Billing Entry</span>
                     </a>
                 </li>
                 <li>
-                    <a class="" href="#">
+                    <a class="" th:href="@{/viewBillsForAudit}">
                         <i class="icon_document_alt"></i>
                         <span>Audit Billing Entry</span>
                     </a>
                 </li>
                 <li>
-                    <a class="" href="#">
+                    <a class="" th:href="@{/forSignatureBilling}">
                         <i class="icon_folder"></i>
-                        <span>Documents Control</span>
+                        <span>For Signature </span>
                     </a>
                 </li>
                 <li class="sub-menu">
@@ -118,8 +136,8 @@
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                        <li> <a class="" href="#"> Prepare Checks </a> </li>
-                        <li> <a class="" href="#"> Release Checks </a> </li>
+                        <li> <a class="" th:href="@{/prepareChecks}">Prepare Checks </a> </li>
+                        <li> <a class="" th:href="@{/releaseChecks}">Release Checks </a> </li>
                     </ul>
                 </li>
             </ul>
@@ -216,7 +234,6 @@
                                                 <th><i class="icon_id"></i> DV No. </th>
                                                 <th><i class="icon_id"></i> Check No. </th>
                                                 <th> Check Amount </th>
-                                                <th> Tax Deducted </th>
                                                 <th> Date Check Released</th>
                                                 <th> Action </th>
                                             </tr>
@@ -226,7 +243,6 @@
                                                 <td th:text="${candidateEntries.get(0).candidateCheckDetails.candidateDvno} ?: 'Not Creted Yet'">176-026-5992</td>
                                                 <td th:text="${candidateEntries.get(0).candidateCheckDetails.candidateCheckno} ?: 'Not Creted Yet'">176-026-5992</td>
                                                 <td th:text="${candidateEntries.get(0).candidateCheckDetails.candidateCheckamount} ?: 'Not Creted Yet'">176-026-5992</td>
-                                                <td th:text="${candidateEntries.get(0).candidateCheckDetails.candidateTaxdeducted} ?: 'Not Creted Yet'">176-026-5992</td>
                                                 <td th:text="${candidateEntries.get(0).candidateCheckDetails.checkReleased} ?: 'Not Released Yet'">date released</td>
                                                 <td> <a class="btn btn-info" th:href="@{/candidateReleaseCheck(id = ${candidateEntries.get(0).candidateCheckDetails.candidateId}, billId = ${candidateEntries.get(0).candidateEnroll})}">Release Check</a></td>
                                             </tr>

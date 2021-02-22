@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <link rel="shortcut icon" th:href="@{img/favicon.png}">
 
-    <title> View Billing Entry </title>
+    <title> Review Billing Entry </title>
 
     <!-- Bootstrap CSS -->
     <link th:href="@{css/bootstrap.min.css}" rel="stylesheet">
@@ -26,6 +26,15 @@
     <script th:src="@{js/respond.min.js}"></script>
     <script th:src="@{js/lte-ie7.js}"></script>
     <![endif]-->
+
+    <style>
+        li.removeBullet{
+            list-style-type: none;
+        }
+    </style>
+
+
+
 </head>
 
 <body>
@@ -43,25 +52,41 @@
         <!--logo end-->
 
         <div class="top-nav notification-row">
-                <!-- user login dropdown start-->
-                <li class="dropdown">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+            <!-- user login dropdown start-->
+            <!--<li class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="profile-ava">
+                            <img alt="" src="img/avatar1_small.jpg">
+                        </span>
+                    <span class="username" th:text="${accountName.accountName}">#USERNAME</span>
+                    <b class="caret"></b>
+                </a>-->
+
+            <!-- user login dropdown start-->
+            <li class="dropdown removeBullet">
+                <a data-toggle="dropdown" class="dropdown-toggle " href="#">
                             <span class="profile-ava">
-                                <img alt="" src="img/avatar1_small.jpg">
+                                <img th:src="@{/images/avatar1_small.jpg}">
                             </span>
-                        <span class="username">#USERNAME</span>
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu extended logout">
-                        <div class="log-arrow-up"></div>
-                        <li>
-                            <a href="#"><i class="icon_key_alt"></i> Log Out</a>
+                    <span class="username" th:text="${accountName.accountName}">Jenifer Smith</span>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu extended logout">
+                    <div class="log-arrow-up"></div>
+
+                    <form class="form-group" id="formLogout" method="post" th:action="@{/logout}">
+
+                        <li id="logoutID" onclick="mySubmit()" class="eborder-top">
+                            <a href="#"><i class="icon_key"></i> Logout </a>
+
                         </li>
-                    </ul>
-                </li>
-                <!-- user login dropdown end -->
-            </ul>
-            <!-- notificatoin dropdown end-->
+
+                    </form>
+                </ul>
+            </li>
+
+
+
         </div>
     </header>
     <!--header end-->
@@ -90,7 +115,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a class="" th:href="@{/reviewBillingEntry}">
+                    <a class="countLink" th:href="@{/reviewBillingEntry}">
                         <i class="icon_search-2"></i>
                         <span>Review Billing Entry</span>
                     </a>
@@ -108,9 +133,9 @@
                     </a>
                 </li>
                 <li>
-                    <a class="" th:href="@{/doccontrolBillingEntry}">
+                    <a class="" th:href="@{/forSignatureBilling}">
                         <i class="icon_folder"></i>
-                        <span>Documents Control</span>
+                        <span>For Signature </span>
                     </a>
                 </li>
                 <li class="sub-menu">
@@ -135,10 +160,10 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa fa-bars"></i> View Billing Entry</h3>
+                    <h3 class="page-header"><i class="fa fa fa-bars"></i> Review Billing Entry</h3>
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a th:href="@{/dashboard}">Home</a></li>
-                        <li><i class="icon_document_alt"></i>View Billing Entry</li>
+                        <li><i class="icon_document_alt"></i>Review Billing Entry</li>
                         <!--<li><i class="fa fa-square-o"></i>Pages</li>-->
                     </ol>
                 </div>
@@ -202,6 +227,12 @@
 <script th:src="@{js/jquery.nicescroll.js}" type="text/javascript"></script>
 <!--custome script for all page-->
 <script th:src="@{js/scripts.js}"></script>
+
+<script type="text/javascript">
+    function mySubmit() {
+        document.getElementById("formLogout").submit();
+    }
+</script>
 
 
 </body>

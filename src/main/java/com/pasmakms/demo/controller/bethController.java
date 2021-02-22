@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -23,26 +24,40 @@ public class bethController {
     private CandidateEntryService candidateEntryService;
     private BillingEntryNotesService billingEntryNotesService;
     private CandidateCheckDetailsService candidateCheckDetailsService;
+    private UserAccountService usernameService;
 
-    public bethController(com.pasmakms.demo.services.BillingEntryService billingEntryService, CandidateEntryService candidateEntryService, BillingEntryNotesService billingEntryNotesService, CandidateCheckDetailsService candidateCheckDetailsService) {
+    public bethController(com.pasmakms.demo.services.BillingEntryService billingEntryService,
+                          CandidateEntryService candidateEntryService, BillingEntryNotesService billingEntryNotesService,
+                          CandidateCheckDetailsService candidateCheckDetailsService, UserAccountService usernameService) {
         BillingEntryService = billingEntryService;
         this.candidateEntryService = candidateEntryService;
         this.billingEntryNotesService = billingEntryNotesService;
         this.candidateCheckDetailsService = candidateCheckDetailsService;
+        this.usernameService = usernameService;
     }
 
     @RequestMapping("/prepareChecks")
-    public String viewAllPrepareChecks(Model model) {
+    public String viewAllPrepareChecks(Model model, Principal principal) {
         List<BillingEntry> billingEntries = BillingEntryService.listAllForPrepareChecks();
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
+
+        model.addAttribute("accountName",user);
+
         model.addAttribute("billingEntries", billingEntries);
         return "viewPrepareChecks";
     }
 
     @RequestMapping("/viewPrepareChecksDetail")
-    public String viewAllPrepareChecksDetail(Model model, @RequestParam(name = "id") int id) {
+    public String viewAllPrepareChecksDetail(Model model, @RequestParam(name = "id") int id, Principal principal) {
         BillingEntry billingEntry = BillingEntryService.get(id);
         List<CandidateEntry> candidateEntryList = candidateEntryService.findAllByCandidateEnrolled(id);
         CandidateCheckDetails candidateCheckDetails = new CandidateCheckDetails();
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
+
+        model.addAttribute("accountName",user);
+
 
         model.addAttribute("candidateEntries",candidateEntryList);
         model.addAttribute("billEntry", billingEntry);
@@ -53,9 +68,14 @@ public class bethController {
     }
 
     @RequestMapping("/viewPrepareChecksView")
-    public String viewAllPrepareChecksView(Model model, @RequestParam(name = "id") int id) {
+    public String viewAllPrepareChecksView(Model model, @RequestParam(name = "id") int id, Principal principal) {
         BillingEntry billingEntry = BillingEntryService.get(id);
         List<CandidateEntry> candidateEntries = candidateEntryService.findAllByCandidateEnrolled(id);
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
+
+        model.addAttribute("accountName",user);
+
 
 
         model.addAttribute("candidateEntries",candidateEntries);
@@ -85,15 +105,17 @@ public class bethController {
 
 
     @RequestMapping("/viewCheckCreation")
-    public String viewCreationOfCheckPage(Model model, @RequestParam(name = "candId") int candId, @RequestParam(name = "billId") int billId){
+    public String viewCreationOfCheckPage(Model model, @RequestParam(name = "candId") int candId, @RequestParam(name = "billId") int billId,Principal principal){
         CandidateEntry candidateEntry = candidateEntryService.get(billId);
         CandidateCheckDetails candidateCheckDetails = candidateCheckDetailsService.get(candId);
         BillingEntry billingEntry = BillingEntryService.get(candidateEntry.getCandidateEnroll());
 
-        System.out.println(candidateCheckDetails);
-        System.out.println(candidateEntry.getCandidateCheckDetails().getCandidateDvno());
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
 
 
+
+        model.addAttribute("accountName",user);
         model.addAttribute("candidateEntry",candidateEntry);
         model.addAttribute("billingEntry",billingEntry);
         model.addAttribute("candidateCheckDetails",candidateCheckDetails);
@@ -129,17 +151,27 @@ public class bethController {
     }
 
     @RequestMapping("releaseChecks")
-    public String viewReleaseChecks(Model model){
+    public String viewReleaseChecks(Model model, Principal principal){
        List<BillingEntry> billingEntry = BillingEntryService.listAllForCheckIssuance();
-       model.addAttribute("billingEntries",billingEntry);
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
+
+        model.addAttribute("accountName",user);
+
+        model.addAttribute("billingEntries",billingEntry);
 
         return "viewChecksIssuance";
     }
 
     @RequestMapping("viewIssuanceChecksView")
-    public String viewReleaseChecksDetails(Model model,@RequestParam(name = "id") int id){
+    public String viewReleaseChecksDetails(Model model,@RequestParam(name = "id") int id,Principal principal){
         BillingEntry billingEntry = BillingEntryService.get(id);
         List<CandidateEntry> candidateEntryList = candidateEntryService.findAllByCandidateEnrolled(id);
+        String name = principal.getName();
+        UserAccount user = usernameService.getUserAccount(name);
+
+        model.addAttribute("accountName",user);
+
 
 
         model.addAttribute("candidateEntries",candidateEntryList);

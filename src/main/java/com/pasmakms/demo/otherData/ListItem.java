@@ -204,6 +204,8 @@ public class ListItem {
 
     List<String> categoryList = Arrays.asList("Training", "Assessment","Allowance");
 
+    List<String> billStatusList = Arrays.asList("for Review","for Verify","for Audit","For Signature","Prepare Checks","Check Issuance","Completed");
+
 
     List<String> souceOfFundsList = Arrays.asList("Romulo \"Kid\" Peña Jr. (LP) District I", "Luis Jose Angel Campos Jr. (NPC) Distrcit II",
                                             "HON. ANTONINO \"TONY\" G. CALIXTO (Pasay City)", "RO Allocation", "CO Allocation","Others");
@@ -213,6 +215,7 @@ public class ListItem {
     List<String> ContactedBy = Arrays.asList("Text","Call");
 
 
+    public List<String>getBillStatusList(){return billStatusList;}
     public List<String> getContactedBy(){return  ContactedBy;}
     public List<String> getSouceOfFundsList(){return souceOfFundsList;}
     public List<String> getTypeOfScholarList() {

@@ -26,10 +26,15 @@
     <script th:src="@{js/respond.min.js}"></script>
     <script th:src="@{js/lte-ie7.js}"></script>
     <![endif]-->
+    <style>
+        li.removeBullet{
+            list-style-type: none;
+        }
+    </style>
+
 </head>
 
-<body>
-<!-- container section start -->
+<body><!-- container section start -->
 <section id="container" class="">
     <!--header start-->
 
@@ -43,25 +48,39 @@
         <!--logo end-->
 
         <div class="top-nav notification-row">
-                <!-- user login dropdown start-->
-                <li class="dropdown">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+            <!-- user login dropdown start-->
+            <!--<li class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="profile-ava">
+                            <img alt="" src="img/avatar1_small.jpg">
+                        </span>
+                    <span class="username" th:text="${accountName.accountName}">#USERNAME</span>
+                    <b class="caret"></b>
+                </a>-->
+
+            <!-- user login dropdown start-->
+            <li class="dropdown removeBullet">
+                <a data-toggle="dropdown" class="dropdown-toggle " href="#">
                             <span class="profile-ava">
-                                <img alt="" src="img/avatar1_small.jpg">
+                                <img th:src="@{/images/avatar1_small.jpg}">
                             </span>
-                        <span class="username">#USERNAME</span>
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu extended logout">
-                        <div class="log-arrow-up"></div>
-                        <li>
-                            <a href="#"><i class="icon_key_alt"></i> Log Out</a>
+                    <span class="username" th:text="${accountName.accountName}">Jenifer Smith</span>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu extended logout">
+                    <div class="log-arrow-up"></div>
+
+                    <form class="form-group" id="formLogout" method="post" th:action="@{/logout}">
+
+                        <li id="logoutID" onclick="mySubmit()" class="eborder-top">
+                            <a href="#"><i class="icon_key"></i> Logout </a>
+
                         </li>
-                    </ul>
-                </li>
-                <!-- user login dropdown end -->
-            </ul>
-            <!-- notificatoin dropdown end-->
+
+                    </form>
+                </ul>
+            </li>
+
         </div>
     </header>
     <!--header end-->
@@ -85,32 +104,32 @@
                     </a>
                     <ul class="sub">
                         <li> <a class="" th:href="@{/viewBillingEntry}"> View Billing Entry </a> </li>
-                        <li> <a class="" href="#"> Create Billing Entry </a> </li>
-                        <li> <a class="" href="#">Add Candidates</a></li>
+                        <li> <a class="" th:href="@{/addBillingEntry}"> Create Billing Entry </a> </li>
+                        <li> <a class="" th:href="@{/viewAllBillingEntry}">View All Documents</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a class="" href="#">
+                    <a class="countLink" target="_blank" th:href="@{/reviewBillingEntry}">
                         <i class="icon_search-2"></i>
                         <span>Review Billing Entry</span>
                     </a>
                 </li>
                 <li>
-                    <a class="" href="#">
+                    <a class="" th:href="@{/verifyBillingEntry}">
                         <i class="icon_phone"></i>
                         <span>Verify Billing Entry</span>
                     </a>
                 </li>
                 <li>
-                    <a class="" href="#">
+                    <a class="" th:href="@{/viewBillsForAudit}">
                         <i class="icon_document_alt"></i>
                         <span>Audit Billing Entry</span>
                     </a>
                 </li>
                 <li>
-                    <a class="" href="#">
+                    <a class="" th:href="@{/forSignatureBilling}">
                         <i class="icon_folder"></i>
-                        <span>Documents Control</span>
+                        <span>For Signature </span>
                     </a>
                 </li>
                 <li class="sub-menu">
@@ -120,8 +139,8 @@
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                        <li> <a class="" href="#"> Prepare Checks </a> </li>
-                        <li> <a class="" href="#"> Release Checks </a> </li>
+                        <li> <a class="" th:href="@{/prepareChecks}">Prepare Checks </a> </li>
+                        <li> <a class="" th:href="@{/releaseChecks}">Release Checks </a> </li>
                     </ul>
                 </li>
             </ul>
@@ -135,10 +154,10 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa fa-bars"></i> View Billing Entry</h3>
+                    <h3 class="page-header"><i class="fa fa fa-bars"></i> Check Issuance</h3>
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a th:href="@{/dashboard}">Home</a></li>
-                        <li><i class="icon_document_alt"></i>View Billing Entry</li>
+                        <li><i class="icon_document_alt"></i>Check Issuance</li>
                         <!--<li><i class="fa fa-square-o"></i>Pages</li>-->
                     </ol>
                 </div>
@@ -227,6 +246,11 @@
                 }
             }
         }
+    }
+</script>
+<script type="text/javascript">
+    function mySubmit() {
+        document.getElementById("formLogout").submit();
     }
 </script>
 

@@ -18,6 +18,19 @@ public class BillingFeedback {
     private int billingId;
     private String billFeedback;
     private Date billDate;
+    private String user;
+    private String billRemarks;
+
+    public BillingFeedback(){
+
+    }
+    public BillingFeedback(int billingId, String billFeedback, Date billDate, String user, String remarks){
+        this.billingId = billingId;
+        this.billFeedback = billFeedback;
+        this.billDate = billDate;
+        this.user = user;
+        this.billRemarks = remarks;
+    }
 
 
 }

@@ -42,25 +42,36 @@
         <!--logo end-->
 
         <div class="top-nav notification-row">
-                <!-- user login dropdown start-->
-                <li class="dropdown">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+            <!-- user login dropdown start-->
+            <!--<li class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="profile-ava">
+                            <img alt="" src="img/avatar1_small.jpg">
+                        </span>
+                    <span class="username" th:text="${accountName.accountName}">#USERNAME</span>
+                    <b class="caret"></b>
+                </a>-->
+
+            <!-- user login dropdown start-->
+            <li class="dropdown removeBullet">
+                <a data-toggle="dropdown" class="dropdown-toggle " href="#">
                             <span class="profile-ava">
-                                <img alt="" src="img/avatar1_small.jpg">
+                                <img th:src="@{/images/avatar1_small.jpg}">
                             </span>
-                        <span class="username">#USERNAME</span>
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu extended logout">
-                        <div class="log-arrow-up"></div>
-                        <li>
-                            <a href="#"><i class="icon_key_alt"></i> Log Out</a>
-                        </li>
-                    </ul>
-                </li>
-                <!-- user login dropdown end -->
-            </ul>
-            <!-- notificatoin dropdown end-->
+                    <span class="username" th:text="${accountName.username}">Jenifer Smith</span>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu extended logout">
+                    <div class="log-arrow-up"></div>
+                    <li class="eborder-top">
+                        <a href="#"><i class="icon_profile"></i> Change my Password</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="icon_mail_alt"></i> Log out</a>
+                    </li>
+                </ul>
+            </li>
+
         </div>
     </header>
     <!--header end-->
@@ -71,7 +82,7 @@
             <!-- sidebar menu start-->
             <ul class="sidebar-menu">
                 <li class="">
-                    <a class="" href="#">
+                    <a class="" th:href="@{/dashboard}">
                         <i class="icon_house_alt"></i>
                         <span>Dashboard</span>
                     </a>
@@ -83,33 +94,33 @@
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                        <li> <a class="" href="#"> View Billing Entry </a> </li>
-                        <li> <a class="" href="#"> Create Billing Entry </a> </li>
-                        <li> <a class="" href="#">Add Candidates</a></li>
+                        <li> <a class="" th:href="@{/viewBillingEntry}"> View Billing Entry </a> </li>
+                        <li> <a class="" th:href="@{/addBillingEntry}"> Create Billing Entry </a> </li>
+                        <li> <a class="" th:href="@{/viewAllBillingEntry}">View All Documents</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a class="" href="#">
+                    <a class="countLink" target="_blank" th:href="@{/reviewBillingEntry}">
                         <i class="icon_search-2"></i>
                         <span>Review Billing Entry</span>
                     </a>
                 </li>
                 <li>
-                    <a class="" href="#">
+                    <a class="" th:href="@{/verifyBillingEntry}">
                         <i class="icon_phone"></i>
                         <span>Verify Billing Entry</span>
                     </a>
                 </li>
                 <li>
-                    <a class="" href="#">
+                    <a class="" th:href="@{/viewBillsForAudit}">
                         <i class="icon_document_alt"></i>
                         <span>Audit Billing Entry</span>
                     </a>
                 </li>
                 <li>
-                    <a class="" href="#">
+                    <a class="" th:href="@{/forSignatureBilling}">
                         <i class="icon_folder"></i>
-                        <span>Documents Control</span>
+                        <span>For Signature </span>
                     </a>
                 </li>
                 <li class="sub-menu">
@@ -119,8 +130,8 @@
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                        <li> <a class="" href="#"> Prepare Checks </a> </li>
-                        <li> <a class="" href="#"> Release Checks </a> </li>
+                        <li> <a class="" th:href="@{/prepareChecks}">Prepare Checks </a> </li>
+                        <li> <a class="" th:href="@{/releaseChecks}">Release Checks </a> </li>
                     </ul>
                 </li>
             </ul>
@@ -143,6 +154,37 @@
                 </div>
             </div>
             <!-- Start of your page content -->
+
+            <div class ="row">
+                <div class="col-lg-12"?>
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="row" align="right">
+                                    <div class="form-group">
+                                        <form th:action="@{/changeBillStatus(id=${billEntry.billId})}" method="post" th:object="${myBillEntry}">
+                                            <label class="col-lg-2 control-label">Change Bill Status to </label>
+                                            <div class="col-lg-7">
+                                                <select class="form-control m-bot15" th:field="*{billStatus}">
+                                                    <option th:each="status : ${billStatus}" th:value="${status}" th:text="${status}">Option 1</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-3" align="left">
+                                                <input type="submit"  class="btn btn-success" value="Submit"/>
+                                            </div>
+
+                                        </form>
+                                    </div>
+
+                                </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="col-lg-6">
@@ -222,15 +264,18 @@
                                                 <th> No. </th>
                                                 <th> Date </th>
                                                 <th> User </th>
+                                                <th> Remarks </th>
                                                 <th> Feedback</th>
 
                                             </thead>
                                             <tbody>
                                             <tr th:each="feedback,count : ${billFeedback}">
                                                 <td th:text="${count.index + 1}">1</td>
-                                                <td th:text="${feedback.billDate}">date</td>
-                                                <td>user</td>
-                                                <td th:text="${feedback.billFeedback}">Feedback</td>
+                                                <td th:text="${feedback.date}">date</td>
+                                                <td th:text="${feedback.user}">user</td>
+                                                <td th:if="${feedback.billRemarks == null}"></td>
+                                                <td th:unless="${feedback.billRemarks == null}" th:style="|${feedback.billRemarks.equalsIgnoreCase('Complied') ? 'color:green;'  : 'color:red;'}|" th:text="${feedback.billRemarks}"></td>
+                                                <td th:text="${feedback.feedback}">Feedback</td>
                                             </tr>
                                             </tbody>
                                         </table>
